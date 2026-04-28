@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>程可可 - 个人主页</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --pink: #ff6b9d;
+    --pink-light: #ffa6c9;
+    --purple: #c471ed;
+    --blue: #12c2e9;
+    --dark: #1a1a2e;
+    --glass: rgba(255,255,255,0.08);
+    --glass-border: rgba(255,255,255,0.15);
+    --text: #e8e8e8;
+    --text-dim: #aaa;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.7;
+  }
+
+  /* ====== 星空粒子背景 ====== */
+  #particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ====== 导航栏 ====== */
+  .navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 16px 0;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(0px);
+  }
+  .navbar.scrolled {
+    backdrop-filter: blur(20px);
+    background: rgba(26,26,46,0.85);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+    padding: 10px 0;
+  }
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-logo {
+    font-size: 1.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 2px;
+    background: var(--pink);
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color: #fff; }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ====== Hero 区域 ====== */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 24px 60px;
+  }
+  .hero-content {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    max-width: 1000px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero-photo {
+    position: relative;
+    flex-shrink: 0;
+  }
+  .photo-ring {
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    padding: 4px;
+    background: linear-gradient(135deg, var(--pink), var(--purple), var(--blue));
+    animation: ringRotate 4s linear infinite;
+  }
+  @keyframes ringRotate {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+  }
+  .photo-ring-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--dark);
+  }
+  .photo-ring-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  .hero-text { flex: 1; min-width: 300px; }
+  .hero-greeting {
+    font-size: 1.1rem;
+    color: var(--pink-light);
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+    animation: fadeInUp 0.8s ease;
+  }
+  .hero-name {
+    font-size: 3.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--pink), var(--blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeInUp 0.8s ease 0.15s both;
+    line-height: 1.2;
+  }
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-dim);
+    margin-top: 12px;
+    animation: fadeInUp 0.8s ease 0.3s both;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 30px;
+    margin-top: 30px;
+    animation: fadeInUp 0.8s ease 0.45s both;
+  }
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat-num {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-stat-label { font-size: 0.85rem; color: var(--text-dim); }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ====== 通用 Section ====== */
+  .section {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+  .section-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 50px;
+    background: linear-gradient(135deg, var(--pink-light), var(--blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ====== 关于我 ====== */
+  .glass-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 40px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(255,107,157,0.15);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+  }
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .info-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .info-icon.pink { background: rgba(255,107,157,0.2); }
+  .info-icon.purple { background: rgba(196,113,237,0.2); }
+  .info-icon.blue { background: rgba(18,194,233,0.2); }
+  .info-icon.green { background: rgba(0,230,118,0.2); }
+  .info-label { font-size: 0.8rem; color: var(--text-dim); }
+  .info-value { font-weight: 600; font-size: 1.05rem; }
+
+  /* ====== 爱好 ====== */
+  .hobbies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+  }
+  .hobby-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    padding: 30px 20px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s ease;
+    cursor: pointer;
+  }
+  .hobby-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    border-color: var(--pink);
+    box-shadow: 0 20px 50px rgba(255,107,157,0.2);
+  }
+  .hobby-icon { font-size: 3rem; margin-bottom: 14px; }
+  .hobby-name { font-weight: 600; font-size: 1.1rem; }
+  .hobby-desc { color: var(--text-dim); font-size: 0.85rem; margin-top: 6px; }
+
+  /* ====== 技能条 ====== */
+  .skills { display: flex; flex-direction: column; gap: 24px; }
+  .skill-item {}
+  .skill-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 500; }
+  .skill-bar {
+    height: 10px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .skill-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--pink), var(--purple));
+    position: relative;
+    animation: skillFill 1.5s ease-out forwards;
+    width: 0;
+  }
+  @keyframes skillFill {
+    to { width: var(--w); }
+  }
+
+  /* ====== 时间线 ====== */
+  .timeline { position: relative; padding-left: 30px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--pink), var(--purple), var(--blue));
+  }
+  .timeline-item { position: relative; margin-bottom: 36px; }
+  .timeline-dot {
+    position: absolute;
+    left: -30px;
+    top: 4px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--pink);
+    box-shadow: 0 0 20px rgba(255,107,157,0.6);
+  }
+  .timeline-date { font-size: 0.85rem; color: var(--pink-light); font-weight: 500; }
+  .timeline-title { font-weight: 700; font-size: 1.1rem; margin: 4px 0; }
+  .timeline-desc { color: var(--text-dim); font-size: 0.9rem; }
+
+  /* ====== 名言/座右铭 ====== */
+  .quote-section {
+    position: relative; z-index: 1;
+    max-width: 700px; margin: 0 auto;
+    padding: 40px 24px 80px;
+    text-align: center;
+  }
+  .quote-card {
+    background: linear-gradient(135deg, rgba(255,107,157,0.1), rgba(18,194,233,0.1));
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 50px 40px;
+    backdrop-filter: blur(10px);
+  }
+  .quote-mark {
+    font-size: 5rem;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .quote-text {
+    font-size: 1.4rem;
+    font-weight: 500;
+    font-style: italic;
+    margin: -10px 0 16px;
+  }
+  .quote-author { color: var(--text-dim); }
+
+  /* ====== Footer ====== */
+  .footer {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 30px;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer .heart { color: var(--pink); }
+
+  /* ====== 响应式 ====== */
+  @media (max-width: 768px) {
+    .hero-name { font-size: 2.4rem; }
+    .hero-content { gap: 30px; }
+    .photo-ring { width: 200px; height: 200px; }
+    .nav-links { gap: 14px; }
+    .nav-links a { font-size: 0.8rem; }
+    .section-title { font-size: 1.6rem; }
+    .glass-card { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- 导航栏 -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo">Keke</div>
+    <ul class="nav-links">
+      <li><a href="#home">首页</a></li>
+      <li><a href="#about">关于</a></li>
+      <li><a href="#hobbies">爱好</a></li>
+      <li><a href="#skills">技能</a></li>
+      <li><a href="#story">经历</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="hero-photo">
+      <div class="photo-ring">
+        <div class="photo-ring-inner">
+          <img src="images/photo.jpg" alt="程可可">
+        </div>
+      </div>
+    </div>
+    <div class="hero-text">
+      <div class="hero-greeting">✦ HELLO WORLD ✦</div>
+      <h1 class="hero-name">程可可</h1>
+      <p class="hero-subtitle">江西省南昌市新建二中 · 高一学生</p>
+      <p style="margin-top:16px;color:var(--text-dim);max-width:450px;">
+        一个热爱生活、热爱学习的高中女生。<br>相信每一份努力都会开出绚烂的花。
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">16</div>
+          <div class="hero-stat-label">花季年龄</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">∞</div>
+          <div class="hero-stat-label">无限可能</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">100%</div>
+          <div class="hero-stat-label">热爱生活</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 关于我 -->
+<section class="section" id="about">
+  <h2 class="section-title">关 于 我</h2>
+  <div class="glass-card">
+    <div class="about-grid">
+      <div class="info-item">
+        <div class="info-icon pink">🌸</div>
+        <div>
+          <div class="info-label">姓名</div>
+          <div class="info-value">程可可</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon purple">🎂</div>
+        <div>
+          <div class="info-label">年龄</div>
+          <div class="info-value">16岁</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon blue">🏫</div>
+        <div>
+          <div class="info-label">学校</div>
+          <div class="info-value">南昌市新建二中</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon green">📚</div>
+        <div>
+          <div class="info-label">年级</div>
+          <div class="info-value">高中一年级</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon pink">📍</div>
+        <div>
+          <div class="info-label">家乡</div>
+          <div class="info-value">江西省南昌市</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon purple">🌟</div>
+        <div>
+          <div class="info-label">星座</div>
+          <div class="info-value">待解锁 ✨</div>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:28px;color:var(--text-dim);line-height:1.9;">
+      嗨～我是程可可，来自江西南昌，目前就读于新建二中高一年级。
+      我是一个开朗爱笑的女孩，喜欢尝试各种新鲜事物。
+      在学校里，我努力学习每一门功课，尤其对文学和英语充满热情。
+      课余时间，我喜欢听音乐、看动漫、和好朋友一起逛街拍照。
+      我相信青春是人生最美的时光，每一天都值得被认真对待。
+      未来的路还很长，我会一步一个脚印，朝着梦想不断前进！💪
+    </p>
+  </div>
+</section>
+
+<!-- 爱好 -->
+<section class="section" id="hobbies">
+  <h2 class="section-title">我的爱好</h2>
+  <div class="hobbies-grid">
+    <div class="hobby-card">
+      <div class="hobby-icon">🎵</div>
+      <div class="hobby-name">听音乐</div>
+      <div class="hobby-desc">旋律是最好的陪伴</div>
+    </div>
+    <div class="hobby-card">
+      <div class="hobby-icon">📖</div>
+      <div class="hobby-name">阅读</div>
+      <div class="hobby-desc">在文字中探索世界</div>
+    </div>
+    <div class="hobby-card">
+      <div class="hobby-icon">🎨</div>
+      <div class="hobby-name">绘画</div>
+      <div class="hobby-desc">用色彩表达心情</div>
+    </div>
+    <div class="hobby-card">
+      <div class="hobby-icon">📸</div>
+      <div class="hobby-name">摄影</div>
+      <div class="hobby-desc">定格美好的瞬间</div>
+    </div>
+    <div class="hobby-card">
+      <div class="hobby-icon">🎬</div>
+      <div class="hobby-name">追动漫</div>
+      <div class="hobby-desc">二次元的世界很精彩</div>
+    </div>
+    <div class="hobby-card">
+      <div class="hobby-icon">🍰</div>
+      <div class="hobby-name">烘焙</div>
+      <div class="hobby-desc">甜蜜的手作时光</div>
+    </div>
+    <div class="hobby-card">
+      <div class="hobby-icon">🏃</div>
+      <div class="hobby-name">跑步</div>
+      <div class="hobby-desc">汗水与风的速度</div>
+    </div>
+    <div class="hobby-card">
+      <div class="hobby-icon">🐱</div>
+      <div class="hobby-name">撸猫</div>
+      <div class="hobby-desc">毛孩子的治愈力</div>
+    </div>
+  </div>
+</section>
+
+<!-- 技能 -->
+<section class="section" id="skills">
+  <h2 class="section-title">技能特长</h2>
+  <div class="glass-card">
+    <div class="skills">
+      <div class="skill-item">
+        <div class="skill-info"><span>语文 / 写作</span><span>85%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="--w:85%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-info"><span>英语</span><span>78%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="--w:78%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-info"><span>数学</span><span>72%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="--w:72%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-info"><span>绘画</span><span>80%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="--w:80%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-info"><span>摄影 / 修图</span><span>70%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="--w:70%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-info"><span>计算机基础</span><span>65%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="--w:65%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 学习经历 -->
+<section class="section" id="story">
+  <h2 class="section-title">成长足迹</h2>
+  <div class="glass-card">
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">2023年9月</div>
+        <div class="timeline-title">考入新建二中</div>
+        <div class="timeline-desc">以优异的成绩考入江西省重点中学——南昌市新建二中，开启了高中生活的新篇章。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background:var(--purple);box-shadow:0 0 20px rgba(196,113,237,0.6);"></div>
+        <div class="timeline-date">2024年</div>
+        <div class="timeline-title">高一的探索与成长</div>
+        <div class="timeline-desc">适应了高中的学习节奏，在各科目中不断进步。参加了学校的社团活动，结识了一群志同道合的好朋友。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background:var(--blue);box-shadow:0 0 20px rgba(18,194,233,0.6);"></div>
+        <div class="timeline-date">2025年</div>
+        <div class="timeline-title">持续进步中</div>
+        <div class="timeline-desc">稳步提升学习成绩，开始思考未来的方向。努力成为更好的自己，为高二的学习做好充分准备。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background:var(--pink-light);box-shadow:0 0 20px rgba(255,166,201,0.6);"></div>
+        <div class="timeline-date">未来</div>
+        <div class="timeline-title">梦想在路上</div>
+        <div class="timeline-desc">每一颗种子都会发芽，每一个梦想都值得追逐。期待在高考中取得好成绩，考入理想的大学！</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 座右铭 -->
+<div class="quote-section">
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <p class="quote-text">星光不问赶路人，时光不负有心人。</p>
+    <p class="quote-author">—— 程可可的座右铭</p>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>Made with <span class="heart">♥</span> by 程可可 · 2026</p>
+  <p style="margin-top:4px;">江西省南昌市新建二中 · 高一</p>
+</footer>
+
+<script>
+// ====== 粒子星空背景 ======
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+class Particle {
+  constructor() {
+    this.reset();
+    this.y = Math.random() * canvas.height;
+  }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = -10;
+    this.size = Math.random() * 2 + 0.5;
+    this.speed = Math.random() * 0.5 + 0.15;
+    this.opacity = Math.random() * 0.6 + 0.2;
+    this.hue = Math.random() < 0.33 ? 340 : Math.random() < 0.5 ? 280 : 190;
+  }
+  update() {
+    this.y += this.speed;
+    if (this.y > canvas.height + 10) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `hsla(${this.hue}, 80%, 65%, ${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 80; i++) {
+  particles.push(new Particle());
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  // 连线
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 100) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(255,107,157,${0.06 * (1 - dist/100)})`;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ====== 导航栏滚动效果 ======
+window.addEventListener('scroll', () => {
+  const navbar = document.getElementById('navbar');
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ====== 技能条滚动触发动画 ======
+const skillObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.skill-fill').forEach(el => {
+        el.style.width = el.style.getPropertyValue('--w');
+      });
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelector('#skills .glass-card')?.letObserved?.(skillObserver);
+skillObserver.observe(document.querySelector('#skills .glass-card'));
+
+// ====== 卡片渐入动画 ======
+const cardObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.glass-card, .hobby-card, .quote-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(40px)';
+  el.style.transition = 'all 0.7s ease';
+  cardObserver.observe(el);
+});
+</script>
+
+</body>
+</html>
