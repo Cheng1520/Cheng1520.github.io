@@ -484,6 +484,21 @@
     letter-spacing: 3px;
     line-height: 2;
   }
+  .outro-video-wrap {
+    display: inline-block;
+    background: rgba(0,0,0,0.5);
+    border-radius: 16px;
+    padding: 8px;
+    margin: 16px auto;
+    box-shadow: 0 0 60px rgba(255,107,157,0.2), 0 0 120px rgba(18,194,233,0.1);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .outro-video-wrap video {
+    width: 320px;
+    max-width: 80vw;
+    border-radius: 10px;
+    display: block;
+  }
   .outro-hint {
     margin-top: 30px;
     font-size: 0.85rem;
@@ -493,6 +508,7 @@
   }
   @media (max-width: 768px) {
     .outro-title { font-size: 1.8rem; }
+    .outro-video-wrap video { width: 240px; }
     .outro-qr-wrap img { width: 170px; height: 170px; }
     .outro-msg { font-size: 1.05rem; letter-spacing: 2px; }
   }
@@ -863,6 +879,10 @@
   <div class="outro-content">
     <div class="outro-glow"></div>
     <div class="outro-title">感谢观看</div>
+    <div class="outro-divider"></div>
+    <div class="outro-video-wrap">
+      <video src="videos/ending.mp4" controls autoplay muted loop playsinline></video>
+    </div>
     <div class="outro-divider"></div>
     <div class="outro-qr-wrap">
       <img src="images/qrcode.jpg" alt="收款码">
