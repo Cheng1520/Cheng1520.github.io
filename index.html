@@ -1,647 +1,26 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>程心悦 | 南昌新建二中高一学生 | 个人主页</title>
-<meta name="description" content="程心悦，江西省南昌市新建二中高一学生个人主页。热爱王者荣耀，热爱生活的可爱女生。">
-<meta name="keywords" content="程心悦,新建二中,南昌,高一,学生,个人主页,江西,南昌新建二中">
-<meta name="author" content="程心悦">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://cheng1520-github-io.pages.dev/">
-<meta property="og:title" content="程心悦 - 个人主页">
-<meta property="og:description" content="程心悦，南昌市新建二中高一学生。热爱生活、热爱王者荣耀，很高兴认识你！">
-<meta property="og:image" content="https://cheng1520-github-io.pages.dev/images/photo.jpg">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  :root {
-    --pink: #ff6b9d;
-    --pink-light: #ffa6c9;
-    --purple: #c471ed;
-    --blue: #12c2e9;
-    --gold: #f0c040;
-    --dark: #1a1a2e;
-    --glass: rgba(255,255,255,0.08);
-    --glass-border: rgba(255,255,255,0.15);
-    --text: #e8e8e8;
-    --text-dim: #aaa;
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'Noto Serif SC', 'Noto Sans SC', 'Ma Shan Zheng', serif;
-    background: var(--dark);
-    color: var(--text);
-    overflow-x: hidden;
-    line-height: 1.8;
-    font-weight: 400;
-    letter-spacing: 0.02em;
-  }
-
-  #particles {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  .navbar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 1000;
-    padding: 16px 0;
-    transition: all 0.4s ease;
-    backdrop-filter: blur(0px);
-  }
-  .navbar.scrolled {
-    backdrop-filter: blur(20px);
-    background: rgba(26,26,46,0.85);
-    box-shadow: 0 4px 30px rgba(0,0,0,0.4);
-    padding: 10px 0;
-  }
-  .nav-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .nav-logo {
-    font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--pink), var(--purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .nav-links { display: flex; gap: 20px; list-style: none; }
-  .nav-links a {
-    color: var(--text-dim);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.9rem;
-    transition: color 0.3s;
-    position: relative;
-  }
-  .nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -4px; left: 50%;
-    transform: translateX(-50%);
-    width: 0; height: 2px;
-    background: var(--pink);
-    border-radius: 2px;
-    transition: width 0.3s;
-  }
-  .nav-links a:hover { color: #fff; }
-  .nav-links a:hover::after { width: 100%; }
-
-  .hero {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 100px 24px 60px;
-  }
-  .hero-content {
-    display: flex;
-    align-items: center;
-    gap: 60px;
-    max-width: 1000px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .hero-photo { position: relative; flex-shrink: 0; }
-  .photo-ring {
-    width: 260px;
-    height: 260px;
-    border-radius: 50%;
-    padding: 4px;
-    background: linear-gradient(135deg, var(--pink), var(--purple), var(--blue));
-    animation: ringRotate 4s linear infinite;
-  }
-  @keyframes ringRotate {
-    0% { filter: hue-rotate(0deg); }
-    100% { filter: hue-rotate(360deg); }
-  }
-  .photo-ring-inner {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    overflow: hidden;
-    background: var(--dark);
-  }
-  .photo-ring-inner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-  }
-  .hero-text { flex: 1; min-width: 300px; }
-  .hero-greeting {
-    font-size: 1.1rem;
-    color: var(--pink-light);
-    letter-spacing: 4px;
-    margin-bottom: 8px;
-    animation: fadeInUp 0.8s ease;
-  }
-  .hero-name {
-    font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
-    font-size: 3.8rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--pink), var(--blue));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: fadeInUp 0.8s ease 0.15s both;
-    line-height: 1.2;
-    letter-spacing: 6px;
-  }
-  .hero-subtitle {
-    font-size: 1.25rem;
-    color: var(--text-dim);
-    margin-top: 12px;
-    animation: fadeInUp 0.8s ease 0.3s both;
-  }
-  .hero-stats {
-    display: flex;
-    gap: 30px;
-    margin-top: 30px;
-    animation: fadeInUp 0.8s ease 0.45s both;
-  }
-  .hero-stat { text-align: center; }
-  .hero-stat-num {
-    font-size: 1.8rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--pink), var(--purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .hero-stat-label { font-size: 0.85rem; color: var(--text-dim); }
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .section {
-    position: relative;
-    z-index: 1;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 80px 24px;
-  }
-  .section-title {
-    font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
-    font-size: 2.2rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 50px;
-    background: linear-gradient(135deg, var(--pink-light), var(--blue));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 4px;
-  }
-
-  .glass-card {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    padding: 40px;
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  .glass-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 60px rgba(255,107,157,0.15);
-  }
-  .about-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 24px;
-  }
-  .info-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px 20px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 14px;
-    border: 1px solid rgba(255,255,255,0.06);
-  }
-  .info-icon {
-    width: 44px; height: 44px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    flex-shrink: 0;
-  }
-  .info-icon.pink { background: rgba(255,107,157,0.2); }
-  .info-icon.purple { background: rgba(196,113,237,0.2); }
-  .info-icon.blue { background: rgba(18,194,233,0.2); }
-  .info-icon.green { background: rgba(0,230,118,0.2); }
-  .info-icon.gold { background: rgba(240,192,64,0.2); }
-  .info-label { font-size: 0.8rem; color: var(--text-dim); }
-  .info-value { font-weight: 600; font-size: 1.05rem; }
-
-  .hobbies-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px;
-  }
-  .hobby-card {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 18px;
-    padding: 30px 20px;
-    text-align: center;
-    backdrop-filter: blur(10px);
-    transition: all 0.4s ease;
-    cursor: pointer;
-  }
-  .hobby-card:hover {
-    transform: translateY(-8px) scale(1.03);
-    border-color: var(--pink);
-    box-shadow: 0 20px 50px rgba(255,107,157,0.2);
-  }
-  .hobby-icon { font-size: 3rem; margin-bottom: 14px; }
-  .hobby-name { font-weight: 600; font-size: 1.1rem; }
-  .hobby-desc { color: var(--text-dim); font-size: 0.85rem; margin-top: 6px; }
-
-  .skills { display: flex; flex-direction: column; gap: 24px; }
-  .skill-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 500; }
-  .skill-bar {
-    height: 10px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .skill-fill {
-    height: 100%;
-    border-radius: 10px;
-    background: linear-gradient(90deg, var(--pink), var(--purple));
-    position: relative;
-    animation: skillFill 1.5s ease-out forwards;
-    width: 0;
-  }
-  @keyframes skillFill { to { width: var(--w); } }
-
-  .timeline { position: relative; padding-left: 30px; }
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 8px; top: 0; bottom: 0;
-    width: 2px;
-    background: linear-gradient(180deg, var(--pink), var(--purple), var(--blue));
-  }
-  .timeline-item { position: relative; margin-bottom: 36px; }
-  .timeline-dot {
-    position: absolute;
-    left: -30px; top: 4px;
-    width: 18px; height: 18px;
-    border-radius: 50%;
-    background: var(--pink);
-    box-shadow: 0 0 20px rgba(255,107,157,0.6);
-  }
-  .timeline-date { font-size: 0.85rem; color: var(--pink-light); font-weight: 500; }
-  .timeline-title { font-weight: 700; font-size: 1.1rem; margin: 4px 0; }
-  .timeline-desc { color: var(--text-dim); font-size: 0.9rem; }
-
-  .quote-section {
-    position: relative; z-index: 1;
-    max-width: 700px; margin: 0 auto;
-    padding: 40px 24px 80px;
-    text-align: center;
-  }
-  .quote-card {
-    background: linear-gradient(135deg, rgba(255,107,157,0.1), rgba(18,194,233,0.1));
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    padding: 50px 40px;
-    backdrop-filter: blur(10px);
-  }
-  .quote-mark {
-    font-size: 5rem;
-    line-height: 1;
-    background: linear-gradient(135deg, var(--pink), var(--purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .quote-text { font-family: 'Ma Shan Zheng', 'Noto Serif SC', cursive; font-size: 1.6rem; font-weight: 500; margin: -10px 0 16px; letter-spacing: 3px; }
-  .quote-author { color: var(--text-dim); }
-
-  .footer {
-    position: relative; z-index: 1;
-    text-align: center;
-    padding: 30px;
-    color: var(--text-dim);
-    font-size: 0.85rem;
-    border-top: 1px solid rgba(255,255,255,0.06);
-  }
-  .footer .heart { color: var(--pink); }
-
-  .school-img {
-    max-width: 100%;
-    border-radius: 14px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
-    transition: transform 0.3s;
-  }
-  .school-img:hover { transform: scale(1.02); }
-
-  /* ====== 出场动画 ====== */
-
-  /* ====== 旋转头像入场 ====== */
-  .hero-photo.spin-in .photo-ring {
-    animation: avatarSpinIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  }
-  @keyframes avatarSpinIn {
-    0% { transform: perspective(800px) rotateY(90deg) scale(0.6); opacity: 0; }
-    60% { transform: perspective(800px) rotateY(-10deg) scale(1.05); opacity: 1; }
-    80% { transform: perspective(800px) rotateY(5deg) scale(0.98); }
-    100% { transform: perspective(800px) rotateY(0deg) scale(1); opacity: 1; }
-  }
-  .hero-photo.spin-in .photo-ring::after {
-    content: '';
-    position: absolute;
-    top: -8px; left: -8px; right: -8px; bottom: -8px;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: var(--pink);
-    border-right-color: var(--purple);
-    animation: ringSparkle 0.8s ease-out 0.6s forwards;
-    opacity: 0;
-  }
-  @keyframes ringSparkle {
-    0% { opacity: 0; transform: scale(0.8); }
-    50% { opacity: 1; }
-    100% { opacity: 0; transform: scale(1.4); }
-  }
-
-  /* ====== 闭幕动画 ====== */
-  #outro-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 9998;
-    background: rgba(10, 10, 26, 0.97);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.8s ease, visibility 0.8s ease;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    cursor: pointer;
-  }
-  #outro-overlay.show {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-  }
-  .outro-starfield {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    overflow: hidden;
-  }
-  .outro-star {
-    position: absolute;
-    background: #fff;
-    border-radius: 50%;
-    animation: starTwinkle 2s ease-in-out infinite;
-  }
-  .outro-content {
-    position: relative;
-    text-align: center;
-    z-index: 1;
-    animation: fadeInUp 0.8s ease 0.3s both;
-  }
-  .outro-glow {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 350px; height: 350px;
-    background: radial-gradient(circle, rgba(255,107,157,0.2) 0%, rgba(18,194,233,0.1) 50%, transparent 70%);
-    border-radius: 50%;
-    animation: glowPulse 2.5s ease-in-out infinite;
-  }
-  .outro-title {
-    font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-    background: linear-gradient(135deg, var(--pink-light), var(--blue));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 6px;
-  }
-  .outro-divider {
-    width: 200px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--pink), var(--purple), transparent);
-    margin: 16px auto;
-  }
-  .outro-qr-wrap {
-    display: inline-block;
-    background: #fff;
-    border-radius: 20px;
-    padding: 16px;
-    margin: 20px auto;
-    box-shadow: 0 0 60px rgba(255,107,157,0.3), 0 0 120px rgba(18,194,233,0.15);
-    animation: qrFloat 3s ease-in-out infinite;
-  }
-  @keyframes qrFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-  }
-  .outro-qr-wrap img {
-    width: 220px;
-    height: 220px;
-    border-radius: 10px;
-    display: block;
-  }
-  .outro-msg {
-    font-family: 'Ma Shan Zheng', 'Noto Serif SC', cursive;
-    font-size: 1.25rem;
-    color: var(--pink-light);
-    margin-top: 18px;
-    letter-spacing: 3px;
-    line-height: 2;
-  }
-  .outro-video-wrap {
-    display: inline-block;
-    background: rgba(0,0,0,0.5);
-    border-radius: 16px;
-    padding: 8px;
-    margin: 16px auto;
-    box-shadow: 0 0 60px rgba(255,107,157,0.2), 0 0 120px rgba(18,194,233,0.1);
-    border: 1px solid rgba(255,255,255,0.1);
-  }
-  .outro-video-wrap video {
-    width: 320px;
-    max-width: 80vw;
-    border-radius: 10px;
-    display: block;
-  }
-  .outro-hint {
-    margin-top: 30px;
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.3);
-    letter-spacing: 3px;
-    animation: hintBlink 2s ease-in-out infinite;
-  }
-  @media (max-width: 768px) {
-    .outro-title { font-size: 1.8rem; }
-    .outro-video-wrap video { width: 240px; }
-    .outro-qr-wrap img { width: 170px; height: 170px; }
-    .outro-msg { font-size: 1.05rem; letter-spacing: 2px; }
-  }
-  #intro-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 9999;
-    background: #0a0a1a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.8s ease, visibility 0.8s ease;
-    cursor: pointer;
-  }
-  #intro-overlay.hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
-  .intro-starfield {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    overflow: hidden;
-  }
-  .intro-star {
-    position: absolute;
-    background: #fff;
-    border-radius: 50%;
-    animation: starTwinkle 2s ease-in-out infinite;
-  }
-  @keyframes starTwinkle {
-    0%, 100% { opacity: 0.2; transform: scale(1); }
-    50% { opacity: 1; transform: scale(2); }
-  }
-  .intro-content {
-    position: relative;
-    text-align: center;
-    z-index: 1;
-  }
-  .intro-glow {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(255,107,157,0.25) 0%, transparent 70%);
-    border-radius: 50%;
-    animation: glowPulse 2s ease-in-out infinite;
-  }
-  @keyframes glowPulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
-    50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
-  }
-  .intro-name-wrap {
-    display: flex;
-    gap: 18px;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  .intro-char {
-    font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
-    font-size: 5.5rem;
-    font-weight: 700;
-    display: inline-block;
-    background: linear-gradient(135deg, #ff6b9d, #c471ed, #12c2e9);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: charDrop 0.7s ease-out forwards, charFloat 3s ease-in-out infinite, gradientShift 3s ease infinite;
-    opacity: 0;
-    transform: translateY(-80px);
-    animation-delay: calc(var(--i) * 0.15s), calc(var(--i) * 0.15s + 0.7s), 0s;
-  }
-  @keyframes charDrop {
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes charFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
-  }
-  @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-  .intro-divider {
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #ff6b9d, #c471ed, #12c2e9, transparent);
-    margin: 0 auto 20px;
-    animation: dividerExpand 0.8s ease-out 0.7s forwards;
-  }
-  @keyframes dividerExpand {
-    to { width: 280px; }
-  }
-  .intro-sub {
-    font-size: 1.1rem;
-    color: #888;
-    letter-spacing: 6px;
-    animation: fadeInUp 0.8s ease 0.9s both;
-  }
-  .intro-hint {
-    margin-top: 50px;
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.35);
-    letter-spacing: 3px;
-    animation: fadeInUp 0.8s ease 1.3s both, hintBlink 2s ease-in-out 2s infinite;
-  }
-  @keyframes hintBlink {
-    0%, 100% { opacity: 0.35; }
-    50% { opacity: 0.8; }
-  }
-  @media (max-width: 768px) {
-    .intro-char { font-size: 3rem; }
-    #intro-overlay { padding: 20px; }
-  }
-
-  @media (max-width: 768px) {
-    .hero-name { font-size: 2.4rem; }
-    .hero-content { gap: 30px; }
-    .photo-ring { width: 200px; height: 200px; }
-    .nav-links { gap: 8px; }
-    .nav-links a { font-size: 0.78rem; }
-    .section-title { font-size: 1.6rem; }
-    .glass-card { padding: 24px; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>程心悦 | 南昌新建二中高一学生 | 个人主页</title>
+  <meta name="description" content="程心悦，江西省南昌市新建二中高一学生个人主页。热爱王者荣耀，热爱生活的可爱女生。">
+  <meta name="keywords" content="程心悦,新建二中,南昌,高一,学生,个人主页,江西,南昌新建二中">
+  <meta name="author" content="程心悦">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://cheng1520-github-io.pages.dev/">
+  <meta property="og:title" content="程心悦 - 个人主页">
+  <meta property="og:description" content="程心悦，南昌市新建二中高一学生。热爱生活、热爱王者荣耀，很高兴认识你！">
+  <meta property="og:image" content="https://cheng1520-github-io.pages.dev/images/photo.jpg">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="styles/global.css">
+  <link rel="stylesheet" href="styles/animations.css">
+  <link rel="stylesheet" href="styles/utilities.css">
 </head>
-<body>
+<body class="page-enter">
 
-<!-- 出场动画 -->
+<!-- 入场动画 -->
 <div id="intro-overlay">
   <div class="intro-starfield"></div>
   <div class="intro-content">
@@ -658,237 +37,66 @@
 </div>
 
 <canvas id="particles"></canvas>
+<div id="floating-text-layer"></div>
 
 <nav class="navbar" id="navbar">
   <div class="nav-inner">
-    <div class="nav-logo">Xinyue</div>
+    <a href="index.html" class="nav-logo">Xinyue</a>
     <ul class="nav-links">
-      <li><a href="#home">首页</a></li>
-      <li><a href="#about">关于</a></li>
-      <li><a href="#school">学校</a></li>
-      <li><a href="#hobbies">爱好</a></li>
-      <li><a href="#skills">技能</a></li>
-      <li><a href="#story">经历</a></li>
+      <li><a href="index.html">首页</a></li>
+      <li><a href="about.html">关于</a></li>
+      <li><a href="hobbies.html">爱好</a></li>
+      <li><a href="gallery.html">相册</a></li>
+      <li><a href="support.html">支持</a></li>
     </ul>
   </div>
 </nav>
 
-<section class="hero" id="home">
-  <div class="hero-content">
-    <div class="hero-photo">
-      <div class="photo-ring">
-        <div class="photo-ring-inner">
-          <img src="images/photo.jpg" alt="程心悦">
+<div class="page-wrapper">
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <div class="hero-photo">
+        <div class="photo-ring">
+          <div class="photo-ring-inner">
+            <img src="images/photo.jpg" alt="程心悦">
+          </div>
+        </div>
+      </div>
+      <div class="hero-text">
+        <div class="hero-greeting"> HELLO WORLD </div>
+        <h1 class="hero-name">程心悦</h1>
+        <p class="hero-subtitle" id="hero-subtitle"><span class="cursor"></span></p>
+        <p style="margin-top:16px;color:var(--text-dim);max-width:450px;">
+          一个热爱王者荣耀的高中女生。<br>期中考900名逆境翻盘，期末387.5分证明自己！
+        </p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-num" data-target="16">0</div>
+            <div class="hero-stat-label">花季年龄</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num" data-target="387.5">0</div>
+            <div class="hero-stat-label">期末分数</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num" data-target="100" data-suffix="%">0</div>
+            <div class="hero-stat-label">热爱峡谷</div>
+          </div>
+        </div>
+        <div class="btn-group" style="margin-top:28px;">
+          <a href="about.html" class="btn btn-primary">了解更多</a>
+          <a href="hobbies.html" class="btn btn-outline">我的爱好</a>
         </div>
       </div>
     </div>
-    <div class="hero-text">
-      <div class="hero-greeting">✦ HELLO WORLD ✦</div>
-      <h1 class="hero-name">程心悦</h1>
-      <p class="hero-subtitle">江西省南昌市新建二中 · 高一学生</p>
-      <p style="margin-top:16px;color:var(--text-dim);max-width:450px;">
-        一个热爱王者荣耀的高中女生。<br>期中考900名逆境翻盘，期末387.5分证明自己！
-      </p>
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <div class="hero-stat-num">16</div>
-          <div class="hero-stat-label">花季年龄</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-num">387.5</div>
-          <div class="hero-stat-label">期末分数</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-num">100%</div>
-          <div class="hero-stat-label">热爱峡谷</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section class="section" id="about">
-  <h2 class="section-title">关 于 我</h2>
-  <div class="glass-card">
-    <div class="about-grid">
-      <div class="info-item">
-        <div class="info-icon pink">🌸</div>
-        <div><div class="info-label">姓名</div><div class="info-value">程心悦</div></div>
-      </div>
-      <div class="info-item">
-        <div class="info-icon purple">🎂</div>
-        <div><div class="info-label">年龄</div><div class="info-value">16岁</div></div>
-      </div>
-      <div class="info-item">
-        <div class="info-icon blue">🏫</div>
-        <div><div class="info-label">学校</div><div class="info-value">南昌市新建二中</div></div>
-      </div>
-      <div class="info-item">
-        <div class="info-icon green">📚</div>
-        <div><div class="info-label">年级</div><div class="info-value">高中一年级</div></div>
-      </div>
-      <div class="info-item">
-        <div class="info-icon pink">📍</div>
-        <div><div class="info-label">家乡</div><div class="info-value">江西省南昌市</div></div>
-      </div>
-      <div class="info-item">
-        <div class="info-icon gold">👑</div>
-        <div><div class="info-label">本命英雄</div><div class="info-value">貂蝉</div></div>
-      </div>
+  <div class="quote-section">
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <p class="quote-text">输了不丢人，不敢打才丢人！</p>
+      <p class="quote-author">—— 程心悦的人生信条</p>
     </div>
-    <p style="margin-top:28px;color:var(--text-dim);line-height:1.9;">
-      嗨～我是程心悦，来自江西南昌，目前就读于新建二中高一年级。
-      我是一个开朗爱笑的女孩，每天和闺蜜们嘻嘻哈哈日子过得很开心。
-      学习嘛……期中考了900名我人麻了，期末怒冲到387.5分，不服来战！
-      课余时间除了打王者荣耀就是打王者荣耀，国服貂蝉是我的骄傲。
-      我哥是南昌大学的高材生，每次看他我都觉得：人家的优秀我啥时候能有？
-      青春嘛，开心最重要，剩下的慢慢来！🌟
-    </p>
-  </div>
-</section>
-
-<section class="section" id="school" style="padding-top:20px;">
-  <h2 class="section-title">我 的 学 校</h2>
-  <div class="glass-card" style="text-align:center;padding:30px;">
-    <img src="images/school.webp" alt="南昌市新建二中" class="school-img">
-    <p style="margin-top:18px;color:var(--text-dim);font-size:0.95rem;">南昌市新建二中 · 我的青春在这里绽放</p>
-  </div>
-</section>
-
-<section class="section" id="hobbies">
-  <h2 class="section-title">我的爱好</h2>
-  <div class="hobbies-grid">
-    <div class="hobby-card">
-      <div class="hobby-icon">🎵</div>
-      <div class="hobby-name">听音乐</div>
-      <div class="hobby-desc">旋律是最好的陪伴</div>
-    </div>
-    <div class="hobby-card">
-      <div class="hobby-icon">👑</div>
-      <div class="hobby-name">王者荣耀</div>
-      <div class="hobby-desc">国服貂蝉 峡谷女王</div>
-    </div>
-    <div class="hobby-card">
-      <div class="hobby-icon">📖</div>
-      <div class="hobby-name">阅读</div>
-      <div class="hobby-desc">在文字中探索世界</div>
-    </div>
-    <div class="hobby-card">
-      <div class="hobby-icon">📸</div>
-      <div class="hobby-name">摄影</div>
-      <div class="hobby-desc">定格美好的瞬间</div>
-    </div>
-    <div class="hobby-card">
-      <div class="hobby-icon">🎬</div>
-      <div class="hobby-name">追动漫</div>
-      <div class="hobby-desc">二次元的世界很精彩</div>
-    </div>
-    <div class="hobby-card">
-      <div class="hobby-icon">🍰</div>
-      <div class="hobby-name">烘焙</div>
-      <div class="hobby-desc">甜蜜的手作时光</div>
-    </div>
-    <div class="hobby-card">
-      <div class="hobby-icon">🏃</div>
-      <div class="hobby-name">跑步</div>
-      <div class="hobby-desc">汗水与风的速度</div>
-    </div>
-    <div class="hobby-card">
-      <div class="hobby-icon">🐱</div>
-      <div class="hobby-name">撸猫</div>
-      <div class="hobby-desc">毛孩子的治愈力</div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="skills">
-  <h2 class="section-title">技能特长</h2>
-  <div class="glass-card">
-    <div class="skills">
-      <div class="skill-item">
-        <div class="skill-info"><span>语文 / 写作</span><span>85%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="--w:85%"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-info"><span>英语</span><span>78%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="--w:78%"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-info"><span>数学</span><span>72%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="--w:72%"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-info"><span>王者荣耀（貂蝉）</span><span>95%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="--w:95%"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-info"><span>摄影 / 修图</span><span>70%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="--w:70%"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-info"><span>吹牛逼</span><span>100%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="--w:100%"></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="story">
-  <h2 class="section-title">成长足迹</h2>
-  <div class="glass-card">
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-date">2025年9月</div>
-        <div class="timeline-title">考入新建二中</div>
-        <div class="timeline-desc">擦着分数线考入江西省重点中学——南昌市新建二中，家里人高兴坏了，我也终于和哥哥成了校友（虽然他是大学生哈哈哈）。</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot" style="background:var(--purple);box-shadow:0 0 20px rgba(196,113,237,0.6);"></div>
-        <div class="timeline-date">2025年11月</div>
-        <div class="timeline-title">期中考试 · 怒考900名</div>
-        <div class="timeline-desc">人生第一次期中考试，900名……整个人都麻了。被我妈骂了一整个寒假，王者荣耀差点被卸载。不过没关系，逆袭的故事才刚刚开始！</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot" style="background:var(--blue);box-shadow:0 0 20px rgba(18,194,233,0.6);"></div>
-        <div class="timeline-date">2026年1月</div>
-        <div class="timeline-title">期末考试 · 387.5分逆袭</div>
-        <div class="timeline-desc">经过两个月的疯狂努力（当然王者也没少打），期末考试怒砍387.5分，从900名一路杀上来！虽然离学霸还远，但我证明了：我不是学渣！</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot" style="background:var(--gold);box-shadow:0 0 20px rgba(240,192,64,0.6);"></div>
-        <div class="timeline-date">仰望中</div>
-        <div class="timeline-title">哥哥是我的光</div>
-        <div class="timeline-desc">我哥在南昌大学读书，成绩优异又帅气，是我心中永远的榜样。每次看到他自信满满的样子，我就想：总有一天我也要成为像他一样优秀的人！冲鸭！</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="quote-section">
-  <div class="quote-card">
-    <div class="quote-mark">"</div>
-    <p class="quote-text">输了不丢人，不敢打才丢人！</p>
-    <p class="quote-author">—— 程心悦的人生信条</p>
-  </div>
-</div>
-
-<!-- 闭幕动画 -->
-<div id="outro-overlay">
-  <div class="outro-starfield"></div>
-  <div class="outro-content">
-    <div class="outro-glow"></div>
-    <div class="outro-title">感谢观看</div>
-    <div class="outro-divider"></div>
-    <div class="outro-video-wrap">
-      <video src="videos/ending.mp4" controls autoplay muted loop playsinline></video>
-    </div>
-    <div class="outro-divider"></div>
-    <div class="outro-qr-wrap">
-      <img src="images/qrcode.jpg" alt="收款码">
-    </div>
-    <p class="outro-msg">钱多钱少，一片心意<br>资助一手，不胜感激</p>
-    <div class="outro-hint">点击任意处关闭</div>
   </div>
 </div>
 
@@ -897,155 +105,57 @@
   <p style="margin-top:4px;">江西省南昌市新建二中 · 高一 · 仰望哥哥的每一天</p>
 </footer>
 
+<script src="scripts/particles.js"></script>
+<script src="scripts/floating-text.js"></script>
+<script src="scripts/nav.js"></script>
+<script src="scripts/intro.js"></script>
 <script>
-// ====== 出场动画 ======
+// Typewriter effect for hero subtitle
 (function() {
-  const overlay = document.getElementById('intro-overlay');
-  const starfield = overlay.querySelector('.intro-starfield');
-
-  // 生成星星
-  for (let i = 0; i < 80; i++) {
-    const star = document.createElement('div');
-    star.className = 'intro-star';
-    star.style.cssText = `
-      left:${Math.random()*100}%; top:${Math.random()*100}%;
-      width:${Math.random()*3+1}px; height:${Math.random()*3+1}px;
-      animation-delay:${Math.random()*3}s;
-    `;
-    starfield.appendChild(star);
+  const el = document.getElementById('hero-subtitle');
+  if (!el) return;
+  const text = '江西省南昌市新建二中 · 高一学生';
+  const cursor = el.querySelector('.cursor');
+  let i = 0;
+  function type() {
+    if (i < text.length) {
+      el.insertBefore(document.createTextNode(text[i]), cursor);
+      i++;
+      setTimeout(type, 60 + Math.random() * 40);
+    }
   }
-
-  // 点击关闭
-  const heroPhoto = document.querySelector('.hero-photo');
-  const closeIntro = () => {
-    overlay.classList.add('hidden');
-    setTimeout(() => {
-      if (heroPhoto) heroPhoto.classList.add('spin-in');
-    }, 300);
-    setTimeout(() => overlay.remove(), 800);
-  };
-  overlay.addEventListener('click', closeIntro);
-  // 5秒后自动消失
-  setTimeout(closeIntro, 5000);
+  // Start after intro overlay fades
+  setTimeout(type, 3000);
 })();
 
-// ====== 粒子背景 ======
-const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
-let particles = [];
-
-function resize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resize);
-resize();
-
-class Particle {
-  constructor() { this.reset(); this.y = Math.random() * canvas.height; }
-  reset() {
-    this.x = Math.random() * canvas.width;
-    this.y = -10;
-    this.size = Math.random() * 2 + 0.5;
-    this.speed = Math.random() * 0.5 + 0.15;
-    this.opacity = Math.random() * 0.6 + 0.2;
-    this.hue = Math.random() < 0.33 ? 340 : Math.random() < 0.5 ? 280 : 190;
-  }
-  update() { this.y += this.speed; if (this.y > canvas.height + 10) this.reset(); }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = `hsla(${this.hue}, 80%, 65%, ${this.opacity})`;
-    ctx.fill();
-  }
-}
-
-for (let i = 0; i < 80; i++) particles.push(new Particle());
-
-function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach(p => { p.update(); p.draw(); });
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i + 1; j < particles.length; j++) {
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 100) {
-        ctx.beginPath();
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.strokeStyle = `rgba(255,107,157,${0.06 * (1 - dist / 100)})`;
-        ctx.stroke();
-      }
-    }
-  }
-  requestAnimationFrame(animate);
-}
-animate();
-
-window.addEventListener('scroll', () => {
-  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
-});
-
-const skillObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.querySelectorAll('.skill-fill').forEach(el => {
-        el.style.width = el.style.getPropertyValue('--w');
-      });
-    }
-  });
-}, { threshold: 0.3 });
-skillObserver.observe(document.querySelector('#skills .glass-card'));
-
-const cardObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
-    }
-  });
-}, { threshold: 0.15 });
-document.querySelectorAll('.glass-card, .hobby-card, .quote-card').forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(40px)';
-  el.style.transition = 'all 0.7s ease';
-  cardObserver.observe(el);
-});
-
-// ====== 闭幕动画 ======
+// Number count-up animation
 (function() {
-  const outro = document.getElementById('outro-overlay');
-  const starfield = outro.querySelector('.outro-starfield');
-
-  // 生成星星
-  for (let i = 0; i < 60; i++) {
-    const star = document.createElement('div');
-    star.className = 'outro-star';
-    star.style.cssText = `
-      left:${Math.random()*100}%; top:${Math.random()*100}%;
-      width:${Math.random()*3+1}px; height:${Math.random()*3+1}px;
-      animation-delay:${Math.random()*3}s;
-    `;
-    starfield.appendChild(star);
-  }
-
-  // 点击关闭
-  outro.addEventListener('click', () => {
-    outro.classList.remove('show');
-  });
-
-  // 滚动到底部附近时显示
-  let shown = false;
-  window.addEventListener('scroll', () => {
-    if (shown) return;
-    const scrollBottom = window.innerHeight + window.scrollY;
-    const docHeight = document.documentElement.scrollHeight;
-    if (scrollBottom >= docHeight - 80) {
-      shown = true;
-      outro.classList.add('show');
-    }
-  });
+  const nums = document.querySelectorAll('.hero-stat-num[data-target]');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseFloat(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const isInt = Number.isInteger(target);
+        const duration = 1500;
+        const start = performance.now();
+        const startVal = 0;
+        function update(now) {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = startVal + (target - startVal) * eased;
+          el.textContent = (isInt ? Math.round(current) : current.toFixed(1)) + suffix;
+          if (progress < 1) requestAnimationFrame(update);
+          else { el.textContent = target + suffix; el.classList.add('counted'); }
+        }
+        requestAnimationFrame(update);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  nums.forEach(n => observer.observe(n));
 })();
 </script>
 
