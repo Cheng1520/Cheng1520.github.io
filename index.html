@@ -1,163 +1,643 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>程心悦 | 南昌新建二中高一学生 | 个人主页</title>
-  <meta name="description" content="程心悦，江西省南昌市新建二中高一学生个人主页。热爱王者荣耀，热爱生活的可爱女生。">
-  <meta name="keywords" content="程心悦,新建二中,南昌,高一,学生,个人主页,江西,南昌新建二中">
-  <meta name="author" content="程心悦">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://cheng1520-github-io.pages.dev/">
-  <meta property="og:title" content="程心悦 - 个人主页">
-  <meta property="og:description" content="程心悦，南昌市新建二中高一学生。热爱生活、热爱王者荣耀，很高兴认识你！">
-  <meta property="og:image" content="https://cheng1520-github-io.pages.dev/images/photo.jpg">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="styles/global.css">
-  <link rel="stylesheet" href="styles/animations.css">
-  <link rel="stylesheet" href="styles/utilities.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>圣诞树</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #000; overflow: hidden; cursor: grab; }
+  body:active { cursor: grabbing; }
+  canvas { display: block; }
+</style>
 </head>
-<body class="page-enter">
+<body>
 
-<!-- 入场动画 -->
-<div id="intro-overlay">
-  <div class="intro-starfield"></div>
-  <div class="intro-content">
-    <div class="intro-glow"></div>
-    <div class="intro-name-wrap">
-      <span class="intro-char" style="--i:0">程</span>
-      <span class="intro-char" style="--i:1">心</span>
-      <span class="intro-char" style="--i:2">悦</span>
-    </div>
-    <div class="intro-divider"></div>
-    <p class="intro-sub">南昌市新建二中 · 高一</p>
-    <div class="intro-hint">点击进入</div>
-  </div>
-</div>
-
-<canvas id="particles"></canvas>
-<div id="floating-text-layer"></div>
-
-<nav class="navbar" id="navbar">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo">Xinyue</a>
-    <ul class="nav-links">
-      <li><a href="index.html">首页</a></li>
-      <li><a href="about.html">关于</a></li>
-      <li><a href="hobbies.html">爱好</a></li>
-      <li><a href="gallery.html">相册</a></li>
-      <li><a href="support.html">支持</a></li>
-    </ul>
-  </div>
-</nav>
-
-<div class="page-wrapper">
-  <section class="hero" id="home">
-    <div class="hero-content">
-      <div class="hero-photo">
-        <div class="photo-ring">
-          <div class="photo-ring-inner">
-            <img src="images/photo.jpg" alt="程心悦">
-          </div>
-        </div>
-      </div>
-      <div class="hero-text">
-        <div class="hero-greeting"> HELLO WORLD </div>
-        <h1 class="hero-name">程心悦</h1>
-        <p class="hero-subtitle" id="hero-subtitle"><span class="cursor"></span></p>
-        <p style="margin-top:16px;color:var(--text-dim);max-width:450px;">
-          一个热爱王者荣耀的高中女生。<br>期中考900名逆境翻盘，期末387.5分证明自己！
-        </p>
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <div class="hero-stat-num" data-target="16">0</div>
-            <div class="hero-stat-label">花季年龄</div>
-          </div>
-          <div class="hero-stat">
-            <div class="hero-stat-num" data-target="387.5">0</div>
-            <div class="hero-stat-label">期末分数</div>
-          </div>
-          <div class="hero-stat">
-            <div class="hero-stat-num" data-target="100" data-suffix="%">0</div>
-            <div class="hero-stat-label">热爱峡谷</div>
-          </div>
-        </div>
-        <div class="btn-group" style="margin-top:28px;">
-          <a href="about.html" class="btn btn-primary">了解更多</a>
-          <a href="hobbies.html" class="btn btn-outline">我的爱好</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="quote-section">
-    <div class="quote-card">
-      <div class="quote-mark">"</div>
-      <p class="quote-text">输了不丢人，不敢打才丢人！</p>
-      <p class="quote-author">—— 程心悦的人生信条</p>
-    </div>
-  </div>
-</div>
-
-<footer class="footer">
-  <p>Made with <span class="heart">♥</span> by 程心悦 · 2026</p>
-  <p style="margin-top:4px;">江西省南昌市新建二中 · 高一 · 仰望哥哥的每一天</p>
-</footer>
-
-<script src="scripts/particles.js"></script>
-<script src="scripts/floating-text.js"></script>
-<script src="scripts/nav.js"></script>
-<script src="scripts/intro.js"></script>
-<script>
-// Typewriter effect for hero subtitle
-(function() {
-  const el = document.getElementById('hero-subtitle');
-  if (!el) return;
-  const text = '江西省南昌市新建二中 · 高一学生';
-  const cursor = el.querySelector('.cursor');
-  let i = 0;
-  function type() {
-    if (i < text.length) {
-      el.insertBefore(document.createTextNode(text[i]), cursor);
-      i++;
-      setTimeout(type, 60 + Math.random() * 40);
-    }
-  }
-  // Start after intro overlay fades
-  setTimeout(type, 3000);
-})();
-
-// Number count-up animation
-(function() {
-  const nums = document.querySelectorAll('.hero-stat-num[data-target]');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const el = entry.target;
-        const target = parseFloat(el.dataset.target);
-        const suffix = el.dataset.suffix || '';
-        const isInt = Number.isInteger(target);
-        const duration = 1500;
-        const start = performance.now();
-        const startVal = 0;
-        function update(now) {
-          const elapsed = now - start;
-          const progress = Math.min(elapsed / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          const current = startVal + (target - startVal) * eased;
-          el.textContent = (isInt ? Math.round(current) : current.toFixed(1)) + suffix;
-          if (progress < 1) requestAnimationFrame(update);
-          else { el.textContent = target + suffix; el.classList.add('counted'); }
-        }
-        requestAnimationFrame(update);
-        observer.unobserve(el);
-      }
-    });
-  }, { threshold: 0.5 });
-  nums.forEach(n => observer.observe(n));
-})();
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
 </script>
 
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x020210, 0.00006);
+
+const camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 100);
+camera.position.set(1, 3.5, 13);
+camera.lookAt(0, 3.5, 0);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.3;
+document.body.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 3.5, 0);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+controls.minDistance = 5;
+controls.maxDistance = 22;
+controls.maxPolarAngle = Math.PI * 0.72;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.4;
+controls.update();
+
+// ===== Shared glow texture =====
+function createGlowTexture(innerColor, outerColor) {
+  const c = document.createElement('canvas');
+  c.width = 64; c.height = 64;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  g.addColorStop(0, innerColor || 'rgba(255,255,255,1)');
+  g.addColorStop(0.15, innerColor || 'rgba(255,255,255,0.95)');
+  g.addColorStop(0.4, 'rgba(255,255,255,0.5)');
+  g.addColorStop(0.7, 'rgba(255,255,255,0.1)');
+  g.addColorStop(1, outerColor || 'rgba(255,255,255,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 64, 64);
+  return new THREE.CanvasTexture(c);
+}
+const glowTex = createGlowTexture();
+
+// ===== Colors =====
+const treeGreens = [0x00ff77, 0x00ee66, 0x22ff88, 0x00dd55, 0x33ff99, 0x00cc55, 0x44ffaa, 0x00ff66, 0x11ee77, 0x00ff88];
+const ornamentCols = [0xff1155, 0xff6600, 0xffd700, 0xff0099, 0xff4400, 0xffaa00, 0xff00bb, 0x00bbff, 0xff5500, 0xff88dd, 0x00ffff, 0xff3300];
+const neonCols = [0xff2d75, 0xff8c00, 0xffd700, 0x00e5ff, 0xb347ea, 0xff4081, 0x40c4ff, 0xffab00];
+
+// ==========================================
+// BACKGROUND LAYERS
+// ==========================================
+
+// Aurora / nebula plane
+const auroraGroup = new THREE.Group();
+scene.add(auroraGroup);
+
+for (let j = 0; j < 3; j++) {
+  const auroraGeom = new THREE.PlaneGeometry(30, 20);
+  const auroraCanvas = document.createElement('canvas');
+  auroraCanvas.width = 512; auroraCanvas.height = 256;
+  const actx = auroraCanvas.getContext('2d');
+
+  const hues = [[280, 340], [180, 240], [30, 60]][j];
+  for (let i = 0; i < 60; i++) {
+    const x = Math.random() * 512;
+    const y = Math.random() * 256;
+    const r = 40 + Math.random() * 200;
+    const grad = actx.createRadialGradient(x, y, 0, x, y, r);
+    const hue = hues[0] + Math.random() * (hues[1] - hues[0]);
+    grad.addColorStop(0, `hsla(${hue}, 80%, 60%, 0.15)`);
+    grad.addColorStop(0.4, `hsla(${hue}, 70%, 50%, 0.06)`);
+    grad.addColorStop(1, 'transparent');
+    actx.fillStyle = grad;
+    actx.fillRect(0, 0, 512, 256);
+  }
+  const auroraTex = new THREE.CanvasTexture(auroraCanvas);
+  const auroraMat = new THREE.MeshBasicMaterial({ map: auroraTex, transparent: true, opacity: 0.5, depthWrite: false, side: THREE.DoubleSide });
+  const auroraPlane = new THREE.Mesh(auroraGeom, auroraMat);
+  auroraPlane.position.set(0, 6 + j * 4, -8);
+  auroraPlane.rotation.x = -0.3 + j * 0.15;
+  auroraGroup.add(auroraPlane);
+}
+
+// Distant stars background sphere
+const bgStarCount = 1500;
+const bgStarGeom = new THREE.BufferGeometry();
+const bgStarPos = new Float32Array(bgStarCount * 3);
+const bgStarCol = new Float32Array(bgStarCount * 3);
+const bgStarData = [];
+for (let i = 0; i < bgStarCount; i++) {
+  const phi = Math.acos(2 * Math.random() - 1);
+  const theta = Math.random() * Math.PI * 2;
+  const r = 20 + Math.random() * 15;
+  bgStarPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+  bgStarPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+  bgStarPos[i * 3 + 2] = r * Math.cos(phi);
+  const hue = Math.random() < 0.3 ? 0.12 : Math.random() < 0.15 ? 0.6 : Math.random() * 0.1;
+  const c = new THREE.Color().setHSL(hue, 0.3, 0.6 + Math.random() * 0.4);
+  bgStarCol[i * 3] = c.r;
+  bgStarCol[i * 3 + 1] = c.g;
+  bgStarCol[i * 3 + 2] = c.b;
+  bgStarData.push({ phase: Math.random() * Math.PI * 2, speed: 0.3 + Math.random() * 1.5 });
+}
+bgStarGeom.setAttribute('position', new THREE.BufferAttribute(bgStarPos, 3));
+bgStarGeom.setAttribute('color', new THREE.BufferAttribute(bgStarCol, 3));
+const bgStars = new THREE.Points(bgStarGeom, new THREE.PointsMaterial({
+  size: 0.08, vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.8,
+  map: glowTex,
+}));
+scene.add(bgStars);
+
+// ==========================================
+// GROUND - Snow Field
+// ==========================================
+const groundGroup = new THREE.Group();
+scene.add(groundGroup);
+
+// Main snow ground
+const groundGeom = new THREE.CircleGeometry(6, 64);
+const groundMat = new THREE.MeshStandardMaterial({ color: 0xe8f0ff, roughness: 0.35, metalness: 0.05 });
+const ground = new THREE.Mesh(groundGeom, groundMat);
+ground.rotation.x = -Math.PI / 2;
+ground.position.y = -0.05;
+ground.receiveShadow = true;
+groundGroup.add(ground);
+
+// Ice ring
+const iceGeom = new THREE.TorusGeometry(2.5, 0.3, 16, 64);
+const iceMat = new THREE.MeshStandardMaterial({
+  color: 0xddeeff, roughness: 0.2, metalness: 0.3,
+  emissive: 0x334466, emissiveIntensity: 0.4,
+});
+const iceRing = new THREE.Mesh(iceGeom, iceMat);
+iceRing.rotation.x = -Math.PI / 2;
+iceRing.position.y = 0.12;
+groundGroup.add(iceRing);
+
+// Ground particle sparkles
+const gSparkCount = 600;
+const gSparkGeom = new THREE.BufferGeometry();
+const gSparkPos = new Float32Array(gSparkCount * 3);
+const gSparkCol = new Float32Array(gSparkCount * 3);
+for (let i = 0; i < gSparkCount; i++) {
+  const angle = Math.random() * Math.PI * 2;
+  const r = 1.5 + Math.random() * 5;
+  gSparkPos[i * 3] = Math.cos(angle) * r;
+  gSparkPos[i * 3 + 1] = 0.02;
+  gSparkPos[i * 3 + 2] = Math.sin(angle) * r;
+  const c = new THREE.Color().setHSL(0.55 + Math.random() * 0.2, 0.4, 0.4 + Math.random() * 0.5);
+  gSparkCol[i * 3] = c.r;
+  gSparkCol[i * 3 + 1] = c.g;
+  gSparkCol[i * 3 + 2] = c.b;
+}
+gSparkGeom.setAttribute('position', new THREE.BufferAttribute(gSparkPos, 3));
+gSparkGeom.setAttribute('color', new THREE.BufferAttribute(gSparkCol, 3));
+const gSparks = new THREE.Points(gSparkGeom, new THREE.PointsMaterial({
+  size: 0.06, vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.5,
+  map: glowTex,
+}));
+groundGroup.add(gSparks);
+
+// ==========================================
+// TREE GROUP
+// ==========================================
+const treeGroup = new THREE.Group();
+scene.add(treeGroup);
+
+const treeHeight = 7;
+const baseRadius = 2.6;
+
+// --- Particle tree body ---
+const treeParticleCount = 5000;
+const treeGeom = new THREE.BufferGeometry();
+const treePos = new Float32Array(treeParticleCount * 3);
+const treeCol = new Float32Array(treeParticleCount * 3);
+const treeDataArr = [];
+
+for (let i = 0; i < treeParticleCount; i++) {
+  const y = Math.random() * treeHeight;
+  const radiusAtY = baseRadius * (1 - y / treeHeight);
+  const angle = Math.random() * Math.PI * 2;
+  const r = radiusAtY * (0.4 + Math.random() * 0.6);
+  treePos[i * 3] = Math.cos(angle) * r;
+  treePos[i * 3 + 1] = y;
+  treePos[i * 3 + 2] = Math.sin(angle) * r;
+  const color = new THREE.Color(treeGreens[Math.floor(Math.random() * treeGreens.length)]);
+  treeCol[i * 3] = color.r;
+  treeCol[i * 3 + 1] = color.g;
+  treeCol[i * 3 + 2] = color.b;
+  treeDataArr.push({
+    baseX: Math.cos(angle) * r, baseY: y, baseZ: Math.sin(angle) * r,
+    phase: Math.random() * Math.PI * 2, speed: 0.3 + Math.random() * 1.2,
+    amp: 0.01 + Math.random() * 0.08,
+  });
+}
+treeGeom.setAttribute('position', new THREE.BufferAttribute(treePos, 3));
+treeGeom.setAttribute('color', new THREE.BufferAttribute(treeCol, 3));
+const treeParticles = new THREE.Points(treeGeom, new THREE.PointsMaterial({
+  size: 0.06, vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.95,
+  map: glowTex,
+}));
+treeGroup.add(treeParticles);
+
+// --- 3D Solid Ornaments ---
+const ornamentGroup = new THREE.Group();
+treeGroup.add(ornamentGroup);
+const ornamentDataArr = [];
+
+for (let i = 0; i < 200; i++) {
+  const y = 0.6 + Math.random() * (treeHeight - 1);
+  const radiusAtY = baseRadius * (1 - y / treeHeight) * 0.85;
+  const angle = Math.random() * Math.PI * 2;
+  const r = radiusAtY * (0.5 + Math.random() * 0.5);
+  const color = new THREE.Color(ornamentCols[Math.floor(Math.random() * ornamentCols.length)]);
+
+  const size = 0.06 + Math.random() * 0.09;
+  const geom = new THREE.SphereGeometry(size, 12, 12);
+  const mat = new THREE.MeshStandardMaterial({
+    color, roughness: 0.15, metalness: 0.7,
+    emissive: color, emissiveIntensity: 0.6,
+  });
+  const ornament = new THREE.Mesh(geom, mat);
+  ornament.position.set(Math.cos(angle) * r, y, Math.sin(angle) * r);
+  ornament.castShadow = true;
+  ornamentGroup.add(ornament);
+  ornamentDataArr.push({
+    mesh: ornament, baseX: Math.cos(angle) * r, baseY: y, baseZ: Math.sin(angle) * r,
+    color, speed: 0.5 + Math.random() * 2, phase: Math.random() * Math.PI * 2,
+    amp: 0.04 + Math.random() * 0.2,
+  });
+}
+
+// --- Trunk ---
+const trunkGeom = new THREE.CylinderGeometry(0.2, 0.28, 1.2, 16);
+const trunkMat = new THREE.MeshStandardMaterial({ color: 0x5a3820, roughness: 0.65, metalness: 0.05 });
+const trunk = new THREE.Mesh(trunkGeom, trunkMat);
+trunk.position.y = -0.35;
+trunk.castShadow = true;
+trunk.receiveShadow = true;
+treeGroup.add(trunk);
+
+// --- Star on top ---
+const starGroup = new THREE.Group();
+starGroup.position.y = treeHeight + 0.25;
+treeGroup.add(starGroup);
+
+const starShape = new THREE.Shape();
+const outerR = 0.38, innerR = 0.16, spikes = 5;
+for (let i = 0; i < spikes * 2; i++) {
+  const r = i % 2 === 0 ? outerR : innerR;
+  const angle = (i / (spikes * 2)) * Math.PI * 2 - Math.PI / 2;
+  if (i === 0) starShape.moveTo(Math.cos(angle) * r, Math.sin(angle) * r);
+  else starShape.lineTo(Math.cos(angle) * r, Math.sin(angle) * r);
+}
+starShape.closePath();
+const starExtSettings = { depth: 0.12, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.05, bevelSegments: 3 };
+const starGeom = new THREE.ExtrudeGeometry(starShape, starExtSettings);
+starGeom.center();
+const starMat = new THREE.MeshStandardMaterial({
+  color: 0xffd700, roughness: 0.08, metalness: 0.95,
+  emissive: 0xffaa00, emissiveIntensity: 3,
+});
+const star = new THREE.Mesh(starGeom, starMat);
+star.castShadow = true;
+starGroup.add(star);
+
+// Star glow halo
+const haloGeom = new THREE.RingGeometry(0.2, 0.55, 32);
+const haloMat = new THREE.MeshBasicMaterial({ color: 0xffd700, side: THREE.DoubleSide, transparent: true, opacity: 0.25, depthWrite: false });
+const halo = new THREE.Mesh(haloGeom, haloMat);
+starGroup.add(halo);
+
+// Star particle aura
+const auraCount = 200;
+const auraGeom = new THREE.BufferGeometry();
+const auraPos = new Float32Array(auraCount * 3);
+const auraCol = new Float32Array(auraCount * 3);
+for (let i = 0; i < auraCount; i++) {
+  const phi = Math.random() * Math.PI;
+  const theta = Math.random() * Math.PI * 2;
+  const r = 0.3 + Math.random() * 0.6;
+  auraPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+  auraPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.5;
+  auraPos[i * 3 + 2] = r * Math.cos(phi);
+  const c = new THREE.Color().setHSL(0.12 + Math.random() * 0.06, 1, 0.5 + Math.random() * 0.5);
+  auraCol[i * 3] = c.r;
+  auraCol[i * 3 + 1] = c.g;
+  auraCol[i * 3 + 2] = c.b;
+}
+auraGeom.setAttribute('position', new THREE.BufferAttribute(auraPos, 3));
+auraGeom.setAttribute('color', new THREE.BufferAttribute(auraCol, 3));
+const auraPoints = new THREE.Points(auraGeom, new THREE.PointsMaterial({
+  size: 0.06, vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.8,
+  map: glowTex,
+}));
+starGroup.add(auraPoints);
+
+// --- Spiral Light Rings ---
+const ringCount = 500;
+const ringGeom = new THREE.BufferGeometry();
+const ringPos = new Float32Array(ringCount * 3);
+const ringCol = new Float32Array(ringCount * 3);
+const ringDataArr = [];
+for (let i = 0; i < ringCount; i++) {
+  const h = 0.8 + Math.random() * (treeHeight - 1.2);
+  const radiusAtH = baseRadius * (1 - h / treeHeight) + 0.4;
+  const angle = Math.random() * Math.PI * 2;
+  const r = radiusAtH * (0.6 + Math.random() * 0.4);
+  ringPos[i * 3] = Math.cos(angle) * r;
+  ringPos[i * 3 + 1] = h;
+  ringPos[i * 3 + 2] = Math.sin(angle) * r;
+  const c = new THREE.Color(neonCols[Math.floor(Math.random() * neonCols.length)]);
+  ringCol[i * 3] = c.r;
+  ringCol[i * 3 + 1] = c.g;
+  ringCol[i * 3 + 2] = c.b;
+  ringDataArr.push({ angle, r, baseH: h, speed: 0.3 + Math.random() * 1.5, phase: Math.random() * Math.PI * 2 });
+}
+ringGeom.setAttribute('position', new THREE.BufferAttribute(ringPos, 3));
+ringGeom.setAttribute('color', new THREE.BufferAttribute(ringCol, 3));
+const ringParticles = new THREE.Points(ringGeom, new THREE.PointsMaterial({
+  size: 0.06, vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.7,
+  map: glowTex,
+}));
+treeGroup.add(ringParticles);
+
+// --- Burst Sparkles ---
+const burstCount = 400;
+const burstGeom = new THREE.BufferGeometry();
+const burstPos = new Float32Array(burstCount * 3);
+const burstCol = new Float32Array(burstCount * 3);
+const burstDataArr = [];
+
+function randomTreePos() {
+  const h = 1.5 + Math.random() * 5;
+  const ra = baseRadius * (1 - h / treeHeight) * 0.8;
+  const a = Math.random() * Math.PI * 2;
+  const rd = ra * (0.3 + Math.random() * 0.7);
+  return { x: Math.cos(a) * rd, y: h, z: Math.sin(a) * rd };
+}
+
+for (let i = 0; i < burstCount; i++) {
+  const p = randomTreePos();
+  burstPos[i * 3] = p.x;
+  burstPos[i * 3 + 1] = p.y;
+  burstPos[i * 3 + 2] = p.z;
+  const c = new THREE.Color(neonCols[Math.floor(Math.random() * neonCols.length)]);
+  burstCol[i * 3] = c.r;
+  burstCol[i * 3 + 1] = c.g;
+  burstCol[i * 3 + 2] = c.b;
+  burstDataArr.push({
+    ox: p.x, oy: p.y, oz: p.z,
+    vx: (Math.random() - 0.5) * 0.06,
+    vy: 0.02 + Math.random() * 0.09,
+    vz: (Math.random() - 0.5) * 0.06,
+    life: Math.random() * 4,
+    maxLife: 1 + Math.random() * 3,
+  });
+}
+burstGeom.setAttribute('position', new THREE.BufferAttribute(burstPos, 3));
+burstGeom.setAttribute('color', new THREE.BufferAttribute(burstCol, 3));
+const burstParticles = new THREE.Points(burstGeom, new THREE.PointsMaterial({
+  size: 0.05, vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.8,
+  map: glowTex,
+}));
+treeGroup.add(burstParticles);
+
+// --- Gift Boxes ---
+function createGift(x, z, boxColor, ribbonColor) {
+  const g = new THREE.Group();
+  const boxGeom = new THREE.BoxGeometry(0.4, 0.4, 0.4);
+  const boxMat = new THREE.MeshStandardMaterial({ color: boxColor, roughness: 0.25, metalness: 0.4 });
+  const box = new THREE.Mesh(boxGeom, boxMat);
+  box.position.y = 0.2;
+  box.castShadow = true;
+  box.receiveShadow = true;
+  g.add(box);
+
+  const rMat = new THREE.MeshStandardMaterial({ color: ribbonColor, roughness: 0.15, metalness: 0.6, emissive: ribbonColor, emissiveIntensity: 0.3 });
+  const rh = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.08, 0.42), rMat);
+  rh.position.y = 0.42; rh.castShadow = true; g.add(rh);
+  const rv = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.08, 0.06), rMat);
+  rv.position.y = 0.42; rv.castShadow = true; g.add(rv);
+
+  const bowGeom = new THREE.SphereGeometry(0.08, 8, 8);
+  const b1 = new THREE.Mesh(bowGeom, rMat); b1.position.set(0.12, 0.47, 0); g.add(b1);
+  const b2 = new THREE.Mesh(bowGeom, rMat); b2.position.set(-0.12, 0.47, 0); g.add(b2);
+
+  g.position.set(x, 0, z);
+  g.rotation.y = Math.random() * Math.PI;
+  scene.add(g);
+  return g;
+}
+
+const gifts = [
+  createGift(2.8, 2.2, 0xe74c3c, 0xffd700),
+  createGift(-3.0, 2.0, 0x3498db, 0xf1c40f),
+  createGift(3.0, -2.4, 0x9b59b6, 0xe67e22),
+  createGift(-2.7, -2.2, 0x27ae60, 0xff6b6b),
+  createGift(3.4, -0.3, 0xf39c12, 0xffffff),
+  createGift(-3.2, 0.5, 0xe91e63, 0xffd700),
+];
+
+// ==========================================
+// SNOWFLAKES
+// ==========================================
+const snowCount = 1200;
+const snowGeom = new THREE.BufferGeometry();
+const snowPos = new Float32Array(snowCount * 3);
+const snowCol = new Float32Array(snowCount * 3);
+const snowDataArr = [];
+for (let i = 0; i < snowCount; i++) {
+  snowPos[i * 3] = (Math.random() - 0.5) * 32;
+  snowPos[i * 3 + 1] = Math.random() * 20;
+  snowPos[i * 3 + 2] = (Math.random() - 0.5) * 32;
+  const c = new THREE.Color().setHSL(0.57 + Math.random() * 0.15, 0.08, 0.7 + Math.random() * 0.3);
+  snowCol[i * 3] = c.r;
+  snowCol[i * 3 + 1] = c.g;
+  snowCol[i * 3 + 2] = c.b;
+  snowDataArr.push({
+    sy: 0.008 + Math.random() * 0.05,
+    sx: (Math.random() - 0.5) * 0.015,
+    sz: (Math.random() - 0.5) * 0.015,
+    wobbleA: 0.1 + Math.random() * 0.6,
+    wobbleS: 0.3 + Math.random() * 1.5,
+    phase: Math.random() * Math.PI * 2,
+  });
+}
+snowGeom.setAttribute('position', new THREE.BufferAttribute(snowPos, 3));
+snowGeom.setAttribute('color', new THREE.BufferAttribute(snowCol, 3));
+const snowParticles = new THREE.Points(snowGeom, new THREE.PointsMaterial({
+  size: 0.1, vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.65,
+  map: glowTex,
+}));
+scene.add(snowParticles);
+
+// ==========================================
+// LIGHTING
+// ==========================================
+const ambient = new THREE.AmbientLight(0x1a2a4a, 1.5);
+scene.add(ambient);
+
+const moonLight = new THREE.DirectionalLight(0x4466aa, 3);
+moonLight.position.set(10, 18, 10);
+moonLight.castShadow = true;
+moonLight.shadow.mapSize.set(2048, 2048);
+moonLight.shadow.camera.near = 0.5;
+moonLight.shadow.camera.far = 60;
+moonLight.shadow.camera.left = -15;
+moonLight.shadow.camera.right = 15;
+moonLight.shadow.camera.top = 15;
+moonLight.shadow.camera.bottom = -5;
+moonLight.shadow.bias = -0.0001;
+scene.add(moonLight);
+
+const warmLight = new THREE.PointLight(0xff7730, 35, 16, 1.8);
+warmLight.position.set(0, 0.5, 3);
+warmLight.castShadow = true;
+warmLight.shadow.mapSize.set(1024, 1024);
+scene.add(warmLight);
+
+const topLight = new THREE.PointLight(0xffd700, 15, 8, 2);
+topLight.position.set(0, treeHeight + 0.3, 0);
+scene.add(topLight);
+
+// ==========================================
+// ANIMATION LOOP
+// ==========================================
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  const dt = Math.min(clock.getDelta(), 0.1);
+  const time = performance.now() * 0.001;
+
+  controls.update();
+
+  // Background stars twinkle
+  bgStars.rotation.y += dt * 0.03;
+  bgStars.rotation.x += dt * 0.01;
+  const bgColArr = bgStars.geometry.attributes.color.array;
+  for (let i = 0; i < bgStarCount; i++) {
+    const d = bgStarData[i];
+    const b = 0.4 + Math.sin(time * d.speed + d.phase) * 0.4;
+    bgColArr[i * 3] *= (0.98 + b * 0.02);
+    bgColArr[i * 3 + 1] *= (0.98 + b * 0.02);
+    bgColArr[i * 3 + 2] *= (0.98 + b * 0.02);
+  }
+  bgStars.geometry.attributes.color.needsUpdate = true;
+
+  // Aurora sway
+  auroraGroup.children.forEach((a, i) => {
+    a.position.x = Math.sin(time * 0.2 + i) * 3;
+    a.material.opacity = 0.35 + Math.sin(time * 0.3 + i * 1.5) * 0.15;
+  });
+
+  // Tree sway
+  treeGroup.rotation.z = Math.sin(time * 0.45) * 0.025;
+  treeGroup.rotation.x = Math.cos(time * 0.4) * 0.015;
+
+  // Tree particle shimmer
+  const treePosArr = treeParticles.geometry.attributes.position.array;
+  for (let i = 0; i < treeParticleCount; i++) {
+    const d = treeDataArr[i];
+    treePosArr[i * 3] = d.baseX + Math.sin(time * d.speed + d.phase) * d.amp;
+    treePosArr[i * 3 + 1] = d.baseY + Math.cos(time * d.speed * 1.3 + d.phase) * d.amp * 0.7;
+    treePosArr[i * 3 + 2] = d.baseZ + Math.cos(time * d.speed * 0.8 + d.phase + 1) * d.amp;
+  }
+  treeParticles.geometry.attributes.position.needsUpdate = true;
+
+  // Ornaments float and pulse
+  ornamentDataArr.forEach(d => {
+    const oy = d.baseY + Math.sin(time * d.speed + d.phase) * d.amp;
+    const ox = d.baseX + Math.cos(time * d.speed * 1.2 + d.phase) * d.amp * 0.5;
+    const oz = d.baseZ + Math.sin(time * d.speed * 0.9 + d.phase + 1) * d.amp * 0.5;
+    d.mesh.position.set(ox, oy, oz);
+    const glow = 0.4 + Math.sin(time * 3 + d.phase) * 0.4;
+    d.mesh.material.emissiveIntensity = glow;
+    d.mesh.scale.setScalar(0.8 + Math.sin(time * 2.5 + d.phase) * 0.2);
+  });
+
+  // Ring spiral dance
+  const rpArr = ringParticles.geometry.attributes.position.array;
+  for (let i = 0; i < ringCount; i++) {
+    const d = ringDataArr[i];
+    const a = d.angle + time * d.speed * 0.5;
+    const h = d.baseH + Math.sin(time * d.speed * 0.8 + d.phase) * 0.5;
+    const r = d.r + Math.cos(time * d.speed * 0.6 + d.phase) * 0.15;
+    rpArr[i * 3] = Math.cos(a) * r;
+    rpArr[i * 3 + 1] = Math.max(0.5, Math.min(treeHeight - 0.3, h));
+    rpArr[i * 3 + 2] = Math.sin(a) * r;
+  }
+  ringParticles.geometry.attributes.position.needsUpdate = true;
+  ringParticles.material.opacity = 0.35 + Math.sin(time * 1.5) * 0.25;
+
+  // Star
+  starGroup.rotation.y += dt * 1.0;
+  starGroup.rotation.x = Math.sin(time * 1.6) * 0.25;
+  const sS = 1 + Math.sin(time * 3) * 0.18;
+  starGroup.scale.setScalar(sS);
+  star.material.emissiveIntensity = 2.5 + Math.sin(time * 2.5) * 1.2;
+  halo.material.opacity = 0.15 + Math.sin(time * 2) * 0.1;
+  halo.scale.setScalar(1 + Math.sin(time * 3) * 0.25);
+  auraPoints.material.opacity = 0.5 + Math.sin(time * 2.5) * 0.35;
+  topLight.intensity = 12 + Math.sin(time * 2.5) * 5;
+
+  // Burst
+  const bpArr = burstParticles.geometry.attributes.position.array;
+  const bcArr = burstParticles.geometry.attributes.color.array;
+  for (let i = 0; i < burstCount; i++) {
+    const d = burstDataArr[i];
+    d.life += dt;
+    if (d.life > d.maxLife) {
+      const p = randomTreePos();
+      d.ox = p.x; d.oy = p.y; d.oz = p.z;
+      d.vx = (Math.random() - 0.5) * 0.07;
+      d.vy = 0.02 + Math.random() * 0.1;
+      d.vz = (Math.random() - 0.5) * 0.07;
+      d.maxLife = 1 + Math.random() * 3;
+      d.life = 0;
+    }
+    const progress = d.life / d.maxLife;
+    bpArr[i * 3] = d.ox + d.vx * d.life * 3;
+    bpArr[i * 3 + 1] = d.oy + d.vy * d.life * 2;
+    bpArr[i * 3 + 2] = d.oz + d.vz * d.life * 3;
+    const alpha = 1 - progress;
+    const nc = new THREE.Color(neonCols[Math.floor(Math.random() * neonCols.length)]);
+    bcArr[i * 3] = nc.r * alpha;
+    bcArr[i * 3 + 1] = nc.g * alpha;
+    bcArr[i * 3 + 2] = nc.b * alpha;
+  }
+  burstParticles.geometry.attributes.position.needsUpdate = true;
+  burstParticles.geometry.attributes.color.needsUpdate = true;
+
+  // Snow
+  const spArr = snowParticles.geometry.attributes.position.array;
+  for (let i = 0; i < snowCount; i++) {
+    const d = snowDataArr[i];
+    spArr[i * 3] += d.sx + Math.sin(time * d.wobbleS + d.phase) * 0.004;
+    spArr[i * 3 + 1] -= d.sy;
+    spArr[i * 3 + 2] += d.sz + Math.cos(time * d.wobbleS + d.phase) * 0.004;
+    if (spArr[i * 3 + 1] < -0.5) {
+      spArr[i * 3 + 1] = 18;
+      spArr[i * 3] = (Math.random() - 0.5) * 32;
+      spArr[i * 3 + 2] = (Math.random() - 0.5) * 32;
+    }
+    if (Math.abs(spArr[i * 3]) > 17) spArr[i * 3] *= -0.9;
+    if (Math.abs(spArr[i * 3 + 2]) > 17) spArr[i * 3 + 2] *= -0.9;
+  }
+  snowParticles.geometry.attributes.position.needsUpdate = true;
+
+  // Ground sparkles
+  gSparks.rotation.y += dt * 0.12;
+  const gspArr = gSparks.geometry.attributes.position.array;
+  for (let i = 0; i < gSparkCount; i++) {
+    gspArr[i * 3 + 1] = 0.02 + Math.abs(Math.sin(time * 2 + i * 0.08)) * 0.08;
+  }
+  gSparks.geometry.attributes.position.needsUpdate = true;
+  groundRing.material.opacity = 0.15 + Math.sin(time * 1.5) * 0.08;
+
+  // Gifts bounce
+  gifts.forEach((g, i) => {
+    g.position.y = Math.abs(Math.sin(time * 1.3 + i * 0.8)) * 0.12;
+  });
+
+  // Warm light flicker
+  warmLight.intensity = 33 + Math.sin(time * 2.3) * 6 + Math.sin(time * 5.5) * 4;
+
+  renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+animate();
+</script>
 </body>
 </html>
