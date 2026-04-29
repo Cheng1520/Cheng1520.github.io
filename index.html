@@ -15,7 +15,7 @@
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -35,11 +35,13 @@
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'Noto Sans SC', sans-serif;
+    font-family: 'Noto Serif SC', 'Noto Sans SC', 'Ma Shan Zheng', serif;
     background: var(--dark);
     color: var(--text);
     overflow-x: hidden;
-    line-height: 1.7;
+    line-height: 1.8;
+    font-weight: 400;
+    letter-spacing: 0.02em;
   }
 
   #particles {
@@ -73,8 +75,9 @@
     align-items: center;
   }
   .nav-logo {
+    font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
     font-size: 1.5rem;
-    font-weight: 900;
+    font-weight: 700;
     background: linear-gradient(135deg, var(--pink), var(--purple));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -154,14 +157,16 @@
     animation: fadeInUp 0.8s ease;
   }
   .hero-name {
-    font-size: 3.5rem;
-    font-weight: 900;
+    font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
+    font-size: 3.8rem;
+    font-weight: 700;
     background: linear-gradient(135deg, var(--pink), var(--blue));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: fadeInUp 0.8s ease 0.15s both;
     line-height: 1.2;
+    letter-spacing: 6px;
   }
   .hero-subtitle {
     font-size: 1.25rem;
@@ -198,6 +203,7 @@
     padding: 80px 24px;
   }
   .section-title {
+    font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
     font-size: 2.2rem;
     font-weight: 700;
     text-align: center;
@@ -206,6 +212,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    letter-spacing: 4px;
   }
 
   .glass-card {
@@ -335,7 +342,7 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .quote-text { font-size: 1.4rem; font-weight: 500; font-style: italic; margin: -10px 0 16px; }
+  .quote-text { font-family: 'Ma Shan Zheng', 'Noto Serif SC', cursive; font-size: 1.6rem; font-weight: 500; margin: -10px 0 16px; letter-spacing: 3px; }
   .quote-author { color: var(--text-dim); }
 
   .footer {
@@ -357,6 +364,138 @@
   .school-img:hover { transform: scale(1.02); }
 
   /* ====== 出场动画 ====== */
+
+  /* ====== 旋转头像入场 ====== */
+  .hero-photo.spin-in .photo-ring {
+    animation: avatarSpinIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+  @keyframes avatarSpinIn {
+    0% { transform: perspective(800px) rotateY(90deg) scale(0.6); opacity: 0; }
+    60% { transform: perspective(800px) rotateY(-10deg) scale(1.05); opacity: 1; }
+    80% { transform: perspective(800px) rotateY(5deg) scale(0.98); }
+    100% { transform: perspective(800px) rotateY(0deg) scale(1); opacity: 1; }
+  }
+  .hero-photo.spin-in .photo-ring::after {
+    content: '';
+    position: absolute;
+    top: -8px; left: -8px; right: -8px; bottom: -8px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: var(--pink);
+    border-right-color: var(--purple);
+    animation: ringSparkle 0.8s ease-out 0.6s forwards;
+    opacity: 0;
+  }
+  @keyframes ringSparkle {
+    0% { opacity: 0; transform: scale(0.8); }
+    50% { opacity: 1; }
+    100% { opacity: 0; transform: scale(1.4); }
+  }
+
+  /* ====== 闭幕动画 ====== */
+  #outro-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 9998;
+    background: rgba(10, 10, 26, 0.97);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    cursor: pointer;
+  }
+  #outro-overlay.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .outro-starfield {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    overflow: hidden;
+  }
+  .outro-star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: starTwinkle 2s ease-in-out infinite;
+  }
+  .outro-content {
+    position: relative;
+    text-align: center;
+    z-index: 1;
+    animation: fadeInUp 0.8s ease 0.3s both;
+  }
+  .outro-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(255,107,157,0.2) 0%, rgba(18,194,233,0.1) 50%, transparent 70%);
+    border-radius: 50%;
+    animation: glowPulse 2.5s ease-in-out infinite;
+  }
+  .outro-title {
+    font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--pink-light), var(--blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 6px;
+  }
+  .outro-divider {
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--pink), var(--purple), transparent);
+    margin: 16px auto;
+  }
+  .outro-qr-wrap {
+    display: inline-block;
+    background: #fff;
+    border-radius: 20px;
+    padding: 16px;
+    margin: 20px auto;
+    box-shadow: 0 0 60px rgba(255,107,157,0.3), 0 0 120px rgba(18,194,233,0.15);
+    animation: qrFloat 3s ease-in-out infinite;
+  }
+  @keyframes qrFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .outro-qr-wrap img {
+    width: 220px;
+    height: 220px;
+    border-radius: 10px;
+    display: block;
+  }
+  .outro-msg {
+    font-family: 'Ma Shan Zheng', 'Noto Serif SC', cursive;
+    font-size: 1.25rem;
+    color: var(--pink-light);
+    margin-top: 18px;
+    letter-spacing: 3px;
+    line-height: 2;
+  }
+  .outro-hint {
+    margin-top: 30px;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 3px;
+    animation: hintBlink 2s ease-in-out infinite;
+  }
+  @media (max-width: 768px) {
+    .outro-title { font-size: 1.8rem; }
+    .outro-qr-wrap img { width: 170px; height: 170px; }
+    .outro-msg { font-size: 1.05rem; letter-spacing: 2px; }
+  }
   #intro-overlay {
     position: fixed;
     top: 0; left: 0;
@@ -415,8 +554,9 @@
     margin-bottom: 20px;
   }
   .intro-char {
-    font-size: 5rem;
-    font-weight: 900;
+    font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
+    font-size: 5.5rem;
+    font-weight: 700;
     display: inline-block;
     background: linear-gradient(135deg, #ff6b9d, #c471ed, #12c2e9);
     background-size: 200% 200%;
@@ -717,6 +857,21 @@
   </div>
 </div>
 
+<!-- 闭幕动画 -->
+<div id="outro-overlay">
+  <div class="outro-starfield"></div>
+  <div class="outro-content">
+    <div class="outro-glow"></div>
+    <div class="outro-title">感谢观看</div>
+    <div class="outro-divider"></div>
+    <div class="outro-qr-wrap">
+      <img src="images/qrcode.jpg" alt="收款码">
+    </div>
+    <p class="outro-msg">钱多钱少，一片心意<br>资助一手，不胜感激</p>
+    <div class="outro-hint">点击任意处关闭</div>
+  </div>
+</div>
+
 <footer class="footer">
   <p>Made with <span class="heart">♥</span> by 程心悦 · 2026</p>
   <p style="margin-top:4px;">江西省南昌市新建二中 · 高一 · 仰望哥哥的每一天</p>
@@ -741,8 +896,12 @@
   }
 
   // 点击关闭
+  const heroPhoto = document.querySelector('.hero-photo');
   const closeIntro = () => {
     overlay.classList.add('hidden');
+    setTimeout(() => {
+      if (heroPhoto) heroPhoto.classList.add('spin-in');
+    }, 300);
     setTimeout(() => overlay.remove(), 800);
   };
   overlay.addEventListener('click', closeIntro);
@@ -833,6 +992,41 @@ document.querySelectorAll('.glass-card, .hobby-card, .quote-card').forEach(el =>
   el.style.transition = 'all 0.7s ease';
   cardObserver.observe(el);
 });
+
+// ====== 闭幕动画 ======
+(function() {
+  const outro = document.getElementById('outro-overlay');
+  const starfield = outro.querySelector('.outro-starfield');
+
+  // 生成星星
+  for (let i = 0; i < 60; i++) {
+    const star = document.createElement('div');
+    star.className = 'outro-star';
+    star.style.cssText = `
+      left:${Math.random()*100}%; top:${Math.random()*100}%;
+      width:${Math.random()*3+1}px; height:${Math.random()*3+1}px;
+      animation-delay:${Math.random()*3}s;
+    `;
+    starfield.appendChild(star);
+  }
+
+  // 点击关闭
+  outro.addEventListener('click', () => {
+    outro.classList.remove('show');
+  });
+
+  // 滚动到底部附近时显示
+  let shown = false;
+  window.addEventListener('scroll', () => {
+    if (shown) return;
+    const scrollBottom = window.innerHeight + window.scrollY;
+    const docHeight = document.documentElement.scrollHeight;
+    if (scrollBottom >= docHeight - 80) {
+      shown = true;
+      outro.classList.add('show');
+    }
+  });
+})();
 </script>
 
 </body>
