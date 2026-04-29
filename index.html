@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>程可可 | 南昌新建二中高一学生 | 个人主页</title>
-<meta name="description" content="程可可，江西省南昌市新建二中高一学生个人主页。一个热爱生活、热爱学习的高中女生。">
-<meta name="keywords" content="程可可,新建二中,南昌,高一,学生,个人主页,江西,南昌新建二中">
-<meta name="author" content="程可可">
+<title>程心悦 | 南昌新建二中高一学生 | 个人主页</title>
+<meta name="description" content="程心悦，江西省南昌市新建二中高一学生个人主页。热爱王者荣耀，热爱生活的可爱女生。">
+<meta name="keywords" content="程心悦,新建二中,南昌,高一,学生,个人主页,江西,南昌新建二中">
+<meta name="author" content="程心悦">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://cheng1.pages.dev/">
-<meta property="og:title" content="程可可 - 个人主页">
-<meta property="og:description" content="程可可，南昌市新建二中高一学生。热爱生活、热爱学习，很高兴认识你！">
-<meta property="og:image" content="https://cheng1.pages.dev/images/photo.jpg">
+<link rel="canonical" href="https://cheng1520-github-io.pages.dev/">
+<meta property="og:title" content="程心悦 - 个人主页">
+<meta property="og:description" content="程心悦，南昌市新建二中高一学生。热爱生活、热爱王者荣耀，很高兴认识你！">
+<meta property="og:image" content="https://cheng1520-github-io.pages.dev/images/photo.jpg">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <style>
@@ -24,6 +24,7 @@
     --pink-light: #ffa6c9;
     --purple: #c471ed;
     --blue: #12c2e9;
+    --gold: #f0c040;
     --dark: #1a1a2e;
     --glass: rgba(255,255,255,0.08);
     --glass-border: rgba(255,255,255,0.15);
@@ -41,7 +42,6 @@
     line-height: 1.7;
   }
 
-  /* ====== 星空粒子背景 ====== */
   #particles {
     position: fixed;
     top: 0; left: 0;
@@ -50,7 +50,6 @@
     pointer-events: none;
   }
 
-  /* ====== 导航栏 ====== */
   .navbar {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -81,12 +80,12 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links { display: flex; gap: 20px; list-style: none; }
   .nav-links a {
     color: var(--text-dim);
     text-decoration: none;
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     transition: color 0.3s;
     position: relative;
   }
@@ -103,7 +102,6 @@
   .nav-links a:hover { color: #fff; }
   .nav-links a:hover::after { width: 100%; }
 
-  /* ====== Hero 区域 ====== */
   .hero {
     position: relative;
     z-index: 1;
@@ -121,10 +119,7 @@
     flex-wrap: wrap;
     justify-content: center;
   }
-  .hero-photo {
-    position: relative;
-    flex-shrink: 0;
-  }
+  .hero-photo { position: relative; flex-shrink: 0; }
   .photo-ring {
     width: 260px;
     height: 260px;
@@ -180,9 +175,7 @@
     margin-top: 30px;
     animation: fadeInUp 0.8s ease 0.45s both;
   }
-  .hero-stat {
-    text-align: center;
-  }
+  .hero-stat { text-align: center; }
   .hero-stat-num {
     font-size: 1.8rem;
     font-weight: 700;
@@ -197,7 +190,6 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* ====== 通用 Section ====== */
   .section {
     position: relative;
     z-index: 1;
@@ -216,7 +208,6 @@
     background-clip: text;
   }
 
-  /* ====== 关于我 ====== */
   .glass-card {
     background: var(--glass);
     border: 1px solid var(--glass-border);
@@ -256,10 +247,10 @@
   .info-icon.purple { background: rgba(196,113,237,0.2); }
   .info-icon.blue { background: rgba(18,194,233,0.2); }
   .info-icon.green { background: rgba(0,230,118,0.2); }
+  .info-icon.gold { background: rgba(240,192,64,0.2); }
   .info-label { font-size: 0.8rem; color: var(--text-dim); }
   .info-value { font-weight: 600; font-size: 1.05rem; }
 
-  /* ====== 爱好 ====== */
   .hobbies-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -284,9 +275,7 @@
   .hobby-name { font-weight: 600; font-size: 1.1rem; }
   .hobby-desc { color: var(--text-dim); font-size: 0.85rem; margin-top: 6px; }
 
-  /* ====== 技能条 ====== */
   .skills { display: flex; flex-direction: column; gap: 24px; }
-  .skill-item {}
   .skill-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 500; }
   .skill-bar {
     height: 10px;
@@ -302,11 +291,8 @@
     animation: skillFill 1.5s ease-out forwards;
     width: 0;
   }
-  @keyframes skillFill {
-    to { width: var(--w); }
-  }
+  @keyframes skillFill { to { width: var(--w); } }
 
-  /* ====== 时间线 ====== */
   .timeline { position: relative; padding-left: 30px; }
   .timeline::before {
     content: '';
@@ -318,8 +304,7 @@
   .timeline-item { position: relative; margin-bottom: 36px; }
   .timeline-dot {
     position: absolute;
-    left: -30px;
-    top: 4px;
+    left: -30px; top: 4px;
     width: 18px; height: 18px;
     border-radius: 50%;
     background: var(--pink);
@@ -329,7 +314,6 @@
   .timeline-title { font-weight: 700; font-size: 1.1rem; margin: 4px 0; }
   .timeline-desc { color: var(--text-dim); font-size: 0.9rem; }
 
-  /* ====== 名言/座右铭 ====== */
   .quote-section {
     position: relative; z-index: 1;
     max-width: 700px; margin: 0 auto;
@@ -351,15 +335,9 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .quote-text {
-    font-size: 1.4rem;
-    font-weight: 500;
-    font-style: italic;
-    margin: -10px 0 16px;
-  }
+  .quote-text { font-size: 1.4rem; font-weight: 500; font-style: italic; margin: -10px 0 16px; }
   .quote-author { color: var(--text-dim); }
 
-  /* ====== Footer ====== */
   .footer {
     position: relative; z-index: 1;
     text-align: center;
@@ -370,13 +348,20 @@
   }
   .footer .heart { color: var(--pink); }
 
-  /* ====== 响应式 ====== */
+  .school-img {
+    max-width: 100%;
+    border-radius: 14px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    transition: transform 0.3s;
+  }
+  .school-img:hover { transform: scale(1.02); }
+
   @media (max-width: 768px) {
     .hero-name { font-size: 2.4rem; }
     .hero-content { gap: 30px; }
     .photo-ring { width: 200px; height: 200px; }
-    .nav-links { gap: 14px; }
-    .nav-links a { font-size: 0.8rem; }
+    .nav-links { gap: 8px; }
+    .nav-links a { font-size: 0.78rem; }
     .section-title { font-size: 1.6rem; }
     .glass-card { padding: 24px; }
   }
@@ -386,13 +371,13 @@
 
 <canvas id="particles"></canvas>
 
-<!-- 导航栏 -->
 <nav class="navbar" id="navbar">
   <div class="nav-inner">
-    <div class="nav-logo">Keke</div>
+    <div class="nav-logo">Xinyue</div>
     <ul class="nav-links">
       <li><a href="#home">首页</a></li>
       <li><a href="#about">关于</a></li>
+      <li><a href="#school">学校</a></li>
       <li><a href="#hobbies">爱好</a></li>
       <li><a href="#skills">技能</a></li>
       <li><a href="#story">经历</a></li>
@@ -400,22 +385,21 @@
   </div>
 </nav>
 
-<!-- Hero -->
 <section class="hero" id="home">
   <div class="hero-content">
     <div class="hero-photo">
       <div class="photo-ring">
         <div class="photo-ring-inner">
-          <img src="images/photo.jpg" alt="程可可">
+          <img src="images/photo.jpg" alt="程心悦">
         </div>
       </div>
     </div>
     <div class="hero-text">
       <div class="hero-greeting">✦ HELLO WORLD ✦</div>
-      <h1 class="hero-name">程可可</h1>
+      <h1 class="hero-name">程心悦</h1>
       <p class="hero-subtitle">江西省南昌市新建二中 · 高一学生</p>
       <p style="margin-top:16px;color:var(--text-dim);max-width:450px;">
-        一个热爱生活、热爱学习的高中女生。<br>相信每一份努力都会开出绚烂的花。
+        一个热爱王者荣耀的高中女生。<br>期中考900名逆境翻盘，期末387.5分证明自己！
       </p>
       <div class="hero-stats">
         <div class="hero-stat">
@@ -423,78 +407,66 @@
           <div class="hero-stat-label">花季年龄</div>
         </div>
         <div class="hero-stat">
-          <div class="hero-stat-num">∞</div>
-          <div class="hero-stat-label">无限可能</div>
+          <div class="hero-stat-num">387.5</div>
+          <div class="hero-stat-label">期末分数</div>
         </div>
         <div class="hero-stat">
           <div class="hero-stat-num">100%</div>
-          <div class="hero-stat-label">热爱生活</div>
+          <div class="hero-stat-label">热爱峡谷</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 关于我 -->
 <section class="section" id="about">
   <h2 class="section-title">关 于 我</h2>
   <div class="glass-card">
     <div class="about-grid">
       <div class="info-item">
         <div class="info-icon pink">🌸</div>
-        <div>
-          <div class="info-label">姓名</div>
-          <div class="info-value">程可可</div>
-        </div>
+        <div><div class="info-label">姓名</div><div class="info-value">程心悦</div></div>
       </div>
       <div class="info-item">
         <div class="info-icon purple">🎂</div>
-        <div>
-          <div class="info-label">年龄</div>
-          <div class="info-value">16岁</div>
-        </div>
+        <div><div class="info-label">年龄</div><div class="info-value">16岁</div></div>
       </div>
       <div class="info-item">
         <div class="info-icon blue">🏫</div>
-        <div>
-          <div class="info-label">学校</div>
-          <div class="info-value">南昌市新建二中</div>
-        </div>
+        <div><div class="info-label">学校</div><div class="info-value">南昌市新建二中</div></div>
       </div>
       <div class="info-item">
         <div class="info-icon green">📚</div>
-        <div>
-          <div class="info-label">年级</div>
-          <div class="info-value">高中一年级</div>
-        </div>
+        <div><div class="info-label">年级</div><div class="info-value">高中一年级</div></div>
       </div>
       <div class="info-item">
         <div class="info-icon pink">📍</div>
-        <div>
-          <div class="info-label">家乡</div>
-          <div class="info-value">江西省南昌市</div>
-        </div>
+        <div><div class="info-label">家乡</div><div class="info-value">江西省南昌市</div></div>
       </div>
       <div class="info-item">
-        <div class="info-icon purple">🌟</div>
-        <div>
-          <div class="info-label">星座</div>
-          <div class="info-value">待解锁 ✨</div>
-        </div>
+        <div class="info-icon gold">👑</div>
+        <div><div class="info-label">本命英雄</div><div class="info-value">貂蝉</div></div>
       </div>
     </div>
     <p style="margin-top:28px;color:var(--text-dim);line-height:1.9;">
-      嗨～我是程可可，来自江西南昌，目前就读于新建二中高一年级。
-      我是一个开朗爱笑的女孩，喜欢尝试各种新鲜事物。
-      在学校里，我努力学习每一门功课，尤其对文学和英语充满热情。
-      课余时间，我喜欢听音乐、看动漫、和好朋友一起逛街拍照。
-      我相信青春是人生最美的时光，每一天都值得被认真对待。
-      未来的路还很长，我会一步一个脚印，朝着梦想不断前进！💪
+      嗨～我是程心悦，来自江西南昌，目前就读于新建二中高一年级。
+      我是一个开朗爱笑的女孩，每天和闺蜜们嘻嘻哈哈日子过得很开心。
+      学习嘛……期中考了900名我人麻了，期末怒冲到387.5分，不服来战！
+      课余时间除了打王者荣耀就是打王者荣耀，国服貂蝉是我的骄傲。
+      我哥是南昌大学的高材生，每次看他我都觉得：人家的优秀我啥时候能有？
+      青春嘛，开心最重要，剩下的慢慢来！🌟
     </p>
   </div>
 </section>
 
-<!-- 爱好 -->
+<section class="section" id="school" style="padding-top:20px;">
+  <h2 class="section-title">我 的 学 校</h2>
+  <div class="glass-card" style="text-align:center;padding:30px;">
+    <img src="images/school.png" alt="南昌市新建二中" class="school-img">
+    <p style="margin-top:18px;color:var(--text-dim);font-size:0.95rem;">南昌市新建二中 · 我的青春在这里绽放</p>
+  </div>
+</section>
+
 <section class="section" id="hobbies">
   <h2 class="section-title">我的爱好</h2>
   <div class="hobbies-grid">
@@ -504,14 +476,14 @@
       <div class="hobby-desc">旋律是最好的陪伴</div>
     </div>
     <div class="hobby-card">
+      <div class="hobby-icon">👑</div>
+      <div class="hobby-name">王者荣耀</div>
+      <div class="hobby-desc">国服貂蝉 峡谷女王</div>
+    </div>
+    <div class="hobby-card">
       <div class="hobby-icon">📖</div>
       <div class="hobby-name">阅读</div>
       <div class="hobby-desc">在文字中探索世界</div>
-    </div>
-    <div class="hobby-card">
-      <div class="hobby-icon">🎨</div>
-      <div class="hobby-name">绘画</div>
-      <div class="hobby-desc">用色彩表达心情</div>
     </div>
     <div class="hobby-card">
       <div class="hobby-icon">📸</div>
@@ -541,7 +513,6 @@
   </div>
 </section>
 
-<!-- 技能 -->
 <section class="section" id="skills">
   <h2 class="section-title">技能特长</h2>
   <div class="glass-card">
@@ -559,71 +530,67 @@
         <div class="skill-bar"><div class="skill-fill" style="--w:72%"></div></div>
       </div>
       <div class="skill-item">
-        <div class="skill-info"><span>绘画</span><span>80%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="--w:80%"></div></div>
+        <div class="skill-info"><span>王者荣耀（貂蝉）</span><span>95%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="--w:95%"></div></div>
       </div>
       <div class="skill-item">
         <div class="skill-info"><span>摄影 / 修图</span><span>70%</span></div>
         <div class="skill-bar"><div class="skill-fill" style="--w:70%"></div></div>
       </div>
       <div class="skill-item">
-        <div class="skill-info"><span>计算机基础</span><span>65%</span></div>
-        <div class="skill-bar"><div class="skill-fill" style="--w:65%"></div></div>
+        <div class="skill-info"><span>吹牛逼</span><span>100%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="--w:100%"></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 学习经历 -->
 <section class="section" id="story">
   <h2 class="section-title">成长足迹</h2>
   <div class="glass-card">
     <div class="timeline">
       <div class="timeline-item">
         <div class="timeline-dot"></div>
-        <div class="timeline-date">2023年9月</div>
+        <div class="timeline-date">2025年9月</div>
         <div class="timeline-title">考入新建二中</div>
-        <div class="timeline-desc">以优异的成绩考入江西省重点中学——南昌市新建二中，开启了高中生活的新篇章。</div>
+        <div class="timeline-desc">擦着分数线考入江西省重点中学——南昌市新建二中，家里人高兴坏了，我也终于和哥哥成了校友（虽然他是大学生哈哈哈）。</div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot" style="background:var(--purple);box-shadow:0 0 20px rgba(196,113,237,0.6);"></div>
-        <div class="timeline-date">2024年</div>
-        <div class="timeline-title">高一的探索与成长</div>
-        <div class="timeline-desc">适应了高中的学习节奏，在各科目中不断进步。参加了学校的社团活动，结识了一群志同道合的好朋友。</div>
+        <div class="timeline-date">2025年11月</div>
+        <div class="timeline-title">期中考试 · 怒考900名</div>
+        <div class="timeline-desc">人生第一次期中考试，900名……整个人都麻了。被我妈骂了一整个寒假，王者荣耀差点被卸载。不过没关系，逆袭的故事才刚刚开始！</div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot" style="background:var(--blue);box-shadow:0 0 20px rgba(18,194,233,0.6);"></div>
-        <div class="timeline-date">2025年</div>
-        <div class="timeline-title">持续进步中</div>
-        <div class="timeline-desc">稳步提升学习成绩，开始思考未来的方向。努力成为更好的自己，为高二的学习做好充分准备。</div>
+        <div class="timeline-date">2026年1月</div>
+        <div class="timeline-title">期末考试 · 387.5分逆袭</div>
+        <div class="timeline-desc">经过两个月的疯狂努力（当然王者也没少打），期末考试怒砍387.5分，从900名一路杀上来！虽然离学霸还远，但我证明了：我不是学渣！</div>
       </div>
       <div class="timeline-item">
-        <div class="timeline-dot" style="background:var(--pink-light);box-shadow:0 0 20px rgba(255,166,201,0.6);"></div>
-        <div class="timeline-date">未来</div>
-        <div class="timeline-title">梦想在路上</div>
-        <div class="timeline-desc">每一颗种子都会发芽，每一个梦想都值得追逐。期待在高考中取得好成绩，考入理想的大学！</div>
+        <div class="timeline-dot" style="background:var(--gold);box-shadow:0 0 20px rgba(240,192,64,0.6);"></div>
+        <div class="timeline-date">仰望中</div>
+        <div class="timeline-title">哥哥是我的光</div>
+        <div class="timeline-desc">我哥在南昌大学读书，成绩优异又帅气，是我心中永远的榜样。每次看到他自信满满的样子，我就想：总有一天我也要成为像他一样优秀的人！冲鸭！</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 座右铭 -->
 <div class="quote-section">
   <div class="quote-card">
     <div class="quote-mark">"</div>
-    <p class="quote-text">星光不问赶路人，时光不负有心人。</p>
-    <p class="quote-author">—— 程可可的座右铭</p>
+    <p class="quote-text">输了不丢人，不敢打才丢人！</p>
+    <p class="quote-author">—— 程心悦的人生信条</p>
   </div>
 </div>
 
-<!-- Footer -->
 <footer class="footer">
-  <p>Made with <span class="heart">♥</span> by 程可可 · 2026</p>
-  <p style="margin-top:4px;">江西省南昌市新建二中 · 高一</p>
+  <p>Made with <span class="heart">♥</span> by 程心悦 · 2026</p>
+  <p style="margin-top:4px;">江西省南昌市新建二中 · 高一 · 仰望哥哥的每一天</p>
 </footer>
 
 <script>
-// ====== 粒子星空背景 ======
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -636,10 +603,7 @@ window.addEventListener('resize', resize);
 resize();
 
 class Particle {
-  constructor() {
-    this.reset();
-    this.y = Math.random() * canvas.height;
-  }
+  constructor() { this.reset(); this.y = Math.random() * canvas.height; }
   reset() {
     this.x = Math.random() * canvas.width;
     this.y = -10;
@@ -648,10 +612,7 @@ class Particle {
     this.opacity = Math.random() * 0.6 + 0.2;
     this.hue = Math.random() < 0.33 ? 340 : Math.random() < 0.5 ? 280 : 190;
   }
-  update() {
-    this.y += this.speed;
-    if (this.y > canvas.height + 10) this.reset();
-  }
+  update() { this.y += this.speed; if (this.y > canvas.height + 10) this.reset(); }
   draw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -660,14 +621,11 @@ class Particle {
   }
 }
 
-for (let i = 0; i < 80; i++) {
-  particles.push(new Particle());
-}
+for (let i = 0; i < 80; i++) particles.push(new Particle());
 
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   particles.forEach(p => { p.update(); p.draw(); });
-  // 连线
   for (let i = 0; i < particles.length; i++) {
     for (let j = i + 1; j < particles.length; j++) {
       const dx = particles[i].x - particles[j].x;
@@ -677,7 +635,7 @@ function animate() {
         ctx.beginPath();
         ctx.moveTo(particles[i].x, particles[i].y);
         ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.strokeStyle = `rgba(255,107,157,${0.06 * (1 - dist/100)})`;
+        ctx.strokeStyle = `rgba(255,107,157,${0.06 * (1 - dist / 100)})`;
         ctx.stroke();
       }
     }
@@ -686,13 +644,10 @@ function animate() {
 }
 animate();
 
-// ====== 导航栏滚动效果 ======
 window.addEventListener('scroll', () => {
-  const navbar = document.getElementById('navbar');
-  navbar.classList.toggle('scrolled', window.scrollY > 60);
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
 });
 
-// ====== 技能条滚动触发动画 ======
 const skillObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -702,11 +657,8 @@ const skillObserver = new IntersectionObserver((entries) => {
     }
   });
 }, { threshold: 0.3 });
-
-document.querySelector('#skills .glass-card')?.letObserved?.(skillObserver);
 skillObserver.observe(document.querySelector('#skills .glass-card'));
 
-// ====== 卡片渐入动画 ======
 const cardObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -715,7 +667,6 @@ const cardObserver = new IntersectionObserver((entries) => {
     }
   });
 }, { threshold: 0.15 });
-
 document.querySelectorAll('.glass-card, .hobby-card, .quote-card').forEach(el => {
   el.style.opacity = '0';
   el.style.transform = 'translateY(40px)';
