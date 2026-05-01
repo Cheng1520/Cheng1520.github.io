@@ -430,11 +430,16 @@ function drawHeartPath(ctx, cx, cy, size) {
   ctx.closePath();
 }
 
-let heartAnim = null;   // { phase, cx, cy, size, startTime }
+let heartAnim = null;   // { phase, cx, cy, size, targetX, targetY, driftStart, driftDur, startTime }
 let circleAnim = null;
 
-function startHeartAnim(cx, cy) {
-  heartAnim = { phase: 'grow', cx, cy, size: 0, targetSize: 160, startTime: performance.now(), trail: [] };
+function startHeartAnim(cx, cy, toX, toY) {
+  heartAnim = {
+    phase: 'grow', cx, cy, size: 0, targetSize: 160,
+    targetX: toX, targetY: toY,
+    driftStart: 0, driftDur: 1800,
+    startTime: performance.now(), trail: [],
+  };
 }
 
 function startCircleAnim(cx, cy) {
@@ -449,7 +454,6 @@ function drawAnimLayer(time) {
     const h = heartAnim;
     if (h.phase === 'grow') {
       h.size += (h.targetSize - h.size) * 0.06;
-      // trail sparkles
       if (Math.random() < 0.6) {
         h.trail.push({
           x: h.cx + (Math.random() - 0.5) * h.size * 0.6,
@@ -457,9 +461,10 @@ function drawAnimLayer(time) {
           life: 1, size: 1 + Math.random() * 3,
         });
       }
-      if (h.size >= h.targetSize * 0.98) { h.phase = 'pulse'; h.size = h.targetSize; }
+      if (h.size >= h.targetSize * 0.98) { h.phase = 'pulse'; h.size = h.targetSize; h.pulseStart = time; }
 
       animCtx.save();
+      animCtx.globalAlpha = 1;
       animCtx.shadowColor = '#ff4081';
       animCtx.shadowBlur = 40;
       drawHeartPath(animCtx, h.cx, h.cy, h.size);
@@ -473,7 +478,16 @@ function drawAnimLayer(time) {
     } else if (h.phase === 'pulse') {
       const pulse = 1 + Math.sin(time * 0.005) * 0.06;
       const s = h.size * pulse;
+      // 1.2秒后开始飘走
+      if (time - h.pulseStart > 1200) {
+        h.phase = 'drift';
+        h.driftStart = time;
+        h.driftFromX = h.cx;
+        h.driftFromY = h.cy;
+      }
+
       animCtx.save();
+      animCtx.globalAlpha = 1;
       animCtx.shadowColor = '#ff4081';
       animCtx.shadowBlur = 40;
       drawHeartPath(animCtx, h.cx, h.cy, s);
@@ -484,6 +498,56 @@ function drawAnimLayer(time) {
       animCtx.fillStyle = '#ff80ab';
       animCtx.fill();
       animCtx.restore();
+    } else if (h.phase === 'drift') {
+      const elapsed = time - h.driftStart;
+      const t = Math.min(1, elapsed / h.driftDur);
+      // ease-in-out
+      const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      h.cx = h.driftFromX + (h.targetX - h.driftFromX) * ease;
+      h.cy = h.driftFromY + (h.targetY - h.driftFromY) * ease;
+      // 缩小 + 半透明
+      const s = h.targetSize * (1 - t * 0.5);
+      const alpha = 1 - t * 0.4;
+
+      animCtx.save();
+      animCtx.globalAlpha = alpha;
+      animCtx.shadowColor = '#ff4081';
+      animCtx.shadowBlur = 30 * (1 - t * 0.5);
+      drawHeartPath(animCtx, h.cx, h.cy, s);
+      animCtx.fillStyle = '#ff4081';
+      animCtx.fill();
+      animCtx.shadowBlur = 50 * (1 - t * 0.5);
+      drawHeartPath(animCtx, h.cx, h.cy, s * 0.55);
+      animCtx.fillStyle = '#ff80ab';
+      animCtx.fill();
+      animCtx.restore();
+
+      // 闪现文字 "爱意随风起"
+      if (t > 0.15) {
+        const textAlpha = Math.sin((t - 0.15) * Math.PI * 2) * 0.5 + 0.5;
+        const fontSize = 26 + Math.sin(t * 8) * 4;
+        animCtx.save();
+        animCtx.globalAlpha = textAlpha * alpha;
+        animCtx.fillStyle = '#ffb8d4';
+        animCtx.font = `bold ${fontSize}px "PingFang SC","KaiTi","Microsoft YaHei",serif`;
+        animCtx.textAlign = 'center';
+        animCtx.shadowColor = '#ff4081';
+        animCtx.shadowBlur = 20;
+        animCtx.fillText('爱意随风起', h.cx, h.cy - s * 0.8);
+        animCtx.shadowBlur = 0;
+        animCtx.restore();
+      }
+
+      // 飘走的粒子尾迹
+      if (Math.random() < 0.5) {
+        h.trail.push({
+          x: h.cx + (Math.random() - 0.5) * s * 0.5,
+          y: h.cy + (Math.random() - 0.5) * s * 0.5,
+          life: 0.6, size: 1 + Math.random() * 3,
+        });
+      }
+
+      if (t >= 1) { h.phase = 'done'; }
     }
     // trail
     for (let i = h.trail.length - 1; i >= 0; i--) {
@@ -811,10 +875,14 @@ let loveBtnScale = 1;
 function handleLoveYes() {
   const cx = window.innerWidth / 2;
   const cy = window.innerHeight / 2;
+  // 飘到右上角空白区
+  const toX = window.innerWidth - 90;
+  const toY = 80;
   spawnAnimParticles(cx, cy, 'rgba(255,64,129,1)', 80);
-  startHeartAnim(cx, cy);
+  startHeartAnim(cx, cy, toX, toY);
   startHeartRain();
-  setTimeout(() => switchStage('stage1', 'stage2'), 1500);
+  // 等 grow + pulse + drift 全部完成再切换（~3.5秒）
+  setTimeout(() => switchStage('stage1', 'stage2'), 3600);
 }
 
 function handleLoveNo() {
