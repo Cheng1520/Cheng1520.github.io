@@ -382,8 +382,15 @@
   </div>
 </div>
 
-<!-- ===== Stage 3: 闪回动画 ===== -->
+<!-- ===== Stage 3: 排序行程 ===== -->
 <div class="stage hidden" id="stage3">
+  <div class="q-title">帮我们的约会排个序吧 💕<br><span style="font-size:0.55em;color:rgba(255,255,255,0.5);">拖拽或点箭头调整顺序</span></div>
+  <div class="sort-list" id="sortList"></div>
+  <button class="btn btn-love" style="margin-top:28px;" onclick="submitSort()">排好啦！✨</button>
+</div>
+
+<!-- ===== Stage 4: 闪回动画 ===== -->
+<div class="stage hidden" id="stage4">
   <div class="q-title">我们一起去… ✨</div>
   <div class="flash-container" id="flashContainer">
     <div class="flash-card active" data-idx="0">
@@ -413,13 +420,6 @@
   </div>
   <div class="flash-dots" id="flashDots"></div>
   <button class="btn btn-love" style="margin-top:24px;padding:12px 36px;font-size:16px;" onclick="skipFlash()">跳过 →</button>
-</div>
-
-<!-- ===== Stage 4: 排序行程 ===== -->
-<div class="stage hidden" id="stage4">
-  <div class="q-title">帮我们的约会排个序吧 💕<br><span style="font-size:0.55em;color:rgba(255,255,255,0.5);">拖拽或点箭头调整顺序</span></div>
-  <div class="sort-list" id="sortList"></div>
-  <button class="btn btn-love" style="margin-top:28px;" onclick="submitSort()">排好啦！✨</button>
 </div>
 
 <!-- ===== Stage 5: 留言 ===== -->
@@ -922,8 +922,8 @@ function switchStage(fromId, toId) {
   const to = document.getElementById(toId);
   if (from) { from.style.pointerEvents = 'none'; from.classList.add('hidden'); }
   if (to) { to.classList.remove('hidden'); to.style.pointerEvents = ''; }
-  // Stage 3 进入时启动闪回动画
-  if (toId === 'stage3') { initFlash(); }
+  // Stage 4 进入时启动闪回动画
+  if (toId === 'stage4') { initFlash(); }
   // Stage 6 进入时启动终场爱心雨
   if (toId === 'stage6') { startHeavyHeartRain(); }
 }
@@ -1094,10 +1094,10 @@ function submitSort() {
   const ranked = sortOrder.map((p, i) => `${i + 1}. ${p}`).join('\n');
   sendMail('小柯的行程排序', ranked);
   showToast('已发送排序结果！✨');
-  setTimeout(() => switchStage('stage4', 'stage5'), 1000);
+  setTimeout(() => switchStage('stage3', 'stage4'), 1000);
 }
 
-// ==================== Stage 3: 闪回动画 ====================
+// ==================== Stage 4: 闪回动画 ====================
 let flashIdx = 0;
 const flashTotal = 6;
 let flashTimer = null;
@@ -1143,7 +1143,7 @@ function updateFlashDots() {
 
 function skipFlash() {
   clearInterval(flashTimer);
-  switchStage('stage3', 'stage4');
+  switchStage('stage4', 'stage5');
 }
 
 // ==================== Stage 5: 留言 ====================
