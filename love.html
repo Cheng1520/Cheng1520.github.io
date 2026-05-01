@@ -205,6 +205,86 @@
     0% { opacity: 1; transform: scale(0); }
     100% { opacity: 0; transform: scale(3); }
   }
+
+  /* === 纸条 === */
+  .note {
+    position: absolute;
+    padding: 24px 28px;
+    background: linear-gradient(135deg, #fffbeb 0%, #fff7d6 30%, #fff3c8 100%);
+    color: #3d1f00;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 2;
+    border-radius: 6px;
+    box-shadow:
+      0 6px 24px rgba(0,0,0,0.45),
+      0 0 50px rgba(255,220,120,0.3),
+      0 0 100px rgba(255,180,80,0.15);
+    pointer-events: none;
+    opacity: 0;
+    max-width: 280px;
+    min-width: 160px;
+    text-align: center;
+    letter-spacing: 2px;
+    z-index: 2;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 34px, rgba(200,180,140,0.10) 34px, rgba(200,180,140,0.10) 35px);
+  }
+  .note::before {
+    content: '';
+    position: absolute;
+    top: -9px; left: 50%;
+    transform: translateX(-50%);
+    width: 40px; height: 12px;
+    background: #fce4b8;
+    border-radius: 3px 3px 0 0;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .note::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(135deg, transparent 48%, rgba(0,0,0,0.03) 48%, rgba(0,0,0,0.03) 52%, transparent 52%),
+      linear-gradient(225deg, transparent 48%, rgba(0,0,0,0.02) 48%, rgba(0,0,0,0.02) 52%, transparent 52%);
+    border-radius: 6px; pointer-events: none;
+  }
+
+  /* 粒子 (note stage) */
+  .particle-emoji {
+    position: absolute; pointer-events: none; z-index: 4;
+    animation: particleBurst var(--fly-dur) ease-out forwards;
+  }
+  @keyframes particleBurst {
+    0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0); }
+  }
+
+  /* 大爱心弹出 */
+  .pop-heart {
+    position: fixed; pointer-events: none; z-index: 10;
+    font-size: 90px;
+    animation: popHeartAnim 1.3s ease-out forwards;
+  }
+  @keyframes popHeartAnim {
+    0%   { opacity: 0; transform: scale(0) rotate(-18deg); }
+    25%  { opacity: 1; transform: scale(1.35) rotate(6deg); }
+    55%  { opacity: 1; transform: scale(0.9) rotate(-3deg); }
+    100% { opacity: 0; transform: scale(2) rotate(0deg) translateY(-200px); }
+  }
+
+  /* 进度条 */
+  .progress-bar-wrap {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    width: 200px; height: 5px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    pointer-events: none; z-index: 3;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%; background: linear-gradient(90deg, #ff80ab, #e91e63);
+    border-radius: 10px; transition: width 0.4s;
+  }
 </style>
 </head>
 <body>
@@ -212,9 +292,19 @@
 <canvas id="bgCanvas"></canvas>
 <canvas id="animCanvas"></canvas>
 <div class="heart-rain" id="heartRain"></div>
+<div id="notesLayer" style="position:fixed;inset:0;pointer-events:none;z-index:2;"></div>
+
+<!-- ===== Stage 0: 纸条阶段 ===== -->
+<div class="stage" id="stage0">
+  <div class="q-title" id="stage0Title">❤ 我喜欢你 ❤</div>
+  <div style="position:fixed;bottom:50px;width:100%;text-align:center;pointer-events:none;z-index:3;" id="stage0Hint">
+    <span style="color:rgba(255,255,255,0.6);font-size:16px;letter-spacing:4px;">—— 点 击 屏 幕 看 看 会 发 生 什 么 ——</span>
+  </div>
+  <div id="clickCounter" style="position:fixed;top:20px;right:20px;color:rgba(255,255,255,0.35);font-size:14px;letter-spacing:2px;pointer-events:none;z-index:3;"></div>
+</div>
 
 <!-- ===== Stage 1: 你喜欢我吗 ===== -->
-<div class="stage" id="stage1">
+<div class="stage hidden" id="stage1">
   <div class="q-title">你喜欢我吗？</div>
   <div class="btn-row">
     <button class="btn btn-love" id="btnYes" onclick="handleLoveYes()">❤️ 喜欢</button>
@@ -484,6 +574,7 @@ function startHeartRain() {
 // ==================== 涟漪特效 ====================
 document.addEventListener('click', (e) => {
   if (e.target.closest('.btn') || e.target.closest('.sort-item') || e.target.closest('.sort-arrow')) return;
+  if (e.target.closest('#stage1') || e.target.closest('#stage2') || e.target.closest('#stage3') || e.target.closest('#stage4')) return;
   const ripple = document.createElement('div');
   ripple.className = 'click-ripple';
   ripple.style.left = (e.clientX - 15) + 'px';
@@ -491,6 +582,195 @@ document.addEventListener('click', (e) => {
   document.body.appendChild(ripple);
   setTimeout(() => ripple.remove(), 800);
 });
+
+// ==================== Stage 0: 纸条阶段 ====================
+const notesLayer = document.getElementById('notesLayer');
+let noteClicks = 0;
+const MAX_NOTE_CLICKS = 15;
+let stage0Active = true;
+
+const messages = [
+  "遇见你的那天\n我听见了\n心动的声音",
+  "你的笑容\n是我见过\n最美的风景",
+  "想和你一起\n看遍世间\n所有的日落",
+  "在我的世界里\n你是唯一\n特别的存在",
+  "每次见到你\n我的心\n都会漏跳一拍",
+  "你就像星星\n照亮了我\n原本暗淡的夜空",
+  "有你在的每一天\n平凡都变得\n闪闪发光",
+  "我的目光\n总是忍不住\n追随你的身影",
+  "你一笑\n我的整个世界\n都亮了",
+  "想牵着你的手\n走过春夏秋冬\n看花开花落",
+  "世界很大\n但我的心很小\n只装得下你",
+  "你知道吗\n你是我平淡生活里\n最意外的惊喜",
+  "如果时光倒流\n我依然会\n选择遇见你",
+  "你是我今生\n最美的遇见\n也是我最想留住的幸运",
+  "我可以\n陪你走很长很长的路\n从清晨到日暮",
+  "你的眼睛\n藏着整个宇宙\n而我想去探索",
+  "和你有关的一切\n我都想\n小心翼翼地收藏",
+  "我喜欢你\n不是因为你有多好\n而是因为你就是你",
+  "每天醒来\n第一个想到的人\n就是你",
+  "你是我\n在这个世界上\n最大的贪心",
+  "你的名字\n是我见过\n最短的情书",
+  "我看过银河\n却只爱你\n这一颗星",
+  "喜欢你\n是我做过\n最勇敢的事",
+  "如果可以\n我想把余生\n都交给你",
+  "你不需要多好\n我喜欢就好\n这是我的心意",
+  "我把思念\n写进风里\n希望它能吹到你身边",
+  "即使看过万千风景\n也不及\n你回眸一笑",
+  "谢谢你\n出现在我的生命里\n让我知道什么是心动",
+  "在我心里\n你永远是\n第一名",
+];
+
+function burstEmojis(x, y) {
+  const emojis = ['💕', '💗', '💖', '✨', '💝', '💘', '💓', '🌟', '💞', '🩷'];
+  const count = 12;
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle-emoji';
+    p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.5;
+    const dist = 70 + Math.random() * 80;
+    p.style.cssText = `
+      left: ${x}px; top: ${y}px;
+      font-size: ${20 + Math.random() * 22}px;
+      --dx: ${Math.cos(angle) * dist}px;
+      --dy: ${Math.sin(angle) * dist}px;
+      --fly-dur: ${500 + Math.random() * 400}ms;
+    `;
+    frag.appendChild(p);
+  }
+  notesLayer.appendChild(frag);
+  setTimeout(() => {
+    notesLayer.querySelectorAll('.particle-emoji').forEach(p => p.remove());
+  }, 1000);
+}
+
+function popHeart(x, y) {
+  const heart = document.createElement('div');
+  heart.className = 'pop-heart';
+  heart.textContent = '❤️';
+  heart.style.left = (x - 45) + 'px';
+  heart.style.top = (y - 45) + 'px';
+  notesLayer.appendChild(heart);
+  setTimeout(() => heart.remove(), 1400);
+}
+
+function spawnNote(x, y) {
+  if (!stage0Active) return;
+  const msg = messages[Math.floor(Math.random() * messages.length)];
+  const note = document.createElement('div');
+  note.className = 'note';
+  note.textContent = msg;
+
+  // 散得更开，不那么密集
+  const offsetX = (Math.random() - 0.5) * 450;
+  const offsetY = (Math.random() - 0.5) * 400 - 60;
+  let nx = x + offsetX;
+  let ny = y + offsetY;
+
+  const w = 280, h = 170;
+  nx = Math.max(10, Math.min(nx, window.innerWidth - w - 10));
+  ny = Math.max(10, Math.min(ny, window.innerHeight - h - 10));
+
+  const rotation = (Math.random() - 0.5) * 25;
+  note.style.cssText = `
+    left: ${nx}px; top: ${ny}px;
+    transform: scale(0) rotate(${rotation}deg);
+  `;
+
+  notesLayer.appendChild(note);
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      note.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+      note.style.opacity = '1';
+      note.style.transform = `scale(${0.9 + Math.random() * 0.25}) rotate(${rotation + (Math.random() - 0.5) * 8}deg)`;
+    });
+  });
+
+  // 纸条留更久，慢慢消失
+  setTimeout(() => {
+    note.style.transition = 'opacity 0.8s ease-out';
+    note.style.opacity = '0';
+    setTimeout(() => note.remove(), 800);
+  }, 6000 + Math.random() * 4000);
+}
+
+// 进度条
+const progressWrap = document.createElement('div');
+progressWrap.className = 'progress-bar-wrap';
+progressWrap.id = 'progressBarWrap';
+progressWrap.innerHTML = '<div class="progress-bar-fill" id="progressBarFill" style="width:0%"></div>';
+document.body.appendChild(progressWrap);
+
+function updateProgress() {
+  const pct = Math.min(100, (noteClicks / MAX_NOTE_CLICKS) * 100);
+  document.getElementById('progressBarFill').style.width = pct + '%';
+  document.getElementById('clickCounter').textContent =
+    noteClicks < MAX_NOTE_CLICKS ? `还剩 ${MAX_NOTE_CLICKS - noteClicks} 下 ✨` : '';
+}
+
+// Stage 0 点击处理
+document.getElementById('stage0').addEventListener('click', (e) => {
+  if (!stage0Active) return;
+  if (e.target.closest('.btn')) return;
+
+  const x = e.clientX, y = e.clientY;
+  noteClicks++;
+
+  // 粒子 + 爱心
+  burstEmojis(x, y);
+  if (noteClicks % 3 === 0) popHeart(x, y);
+
+  // 每次只出 2-3 张纸条
+  const count = 2 + Math.floor(Math.random() * 2);
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => spawnNote(x, y), i * 80);
+  }
+
+  updateProgress();
+
+  // 更新提示
+  const hint = document.getElementById('stage0Hint');
+  if (noteClicks === 1) {
+    hint.querySelector('span').textContent = '—— 再 多 点 几 下 嘛 ——';
+  } else if (noteClicks === 5) {
+    hint.querySelector('span').textContent = '—— 好 玩 吗 ？ 继 续 点 ——';
+  } else if (noteClicks === 10) {
+    hint.querySelector('span').textContent = '—— 快 要 到 了 哟 ——';
+  }
+
+  // 15 下后过渡
+  if (noteClicks >= MAX_NOTE_CLICKS) {
+    stage0Active = false;
+    document.getElementById('stage0Title').style.transition = 'opacity 0.8s';
+    document.getElementById('stage0Title').style.opacity = '0';
+    document.getElementById('stage0Hint').style.transition = 'opacity 0.5s';
+    document.getElementById('stage0Hint').style.opacity = '0';
+    document.getElementById('progressBarWrap').style.transition = 'opacity 0.5s';
+    document.getElementById('progressBarWrap').style.opacity = '0';
+    document.getElementById('clickCounter').style.transition = 'opacity 0.5s';
+    document.getElementById('clickCounter').style.opacity = '0';
+
+    // 清除所有纸条
+    setTimeout(() => {
+      notesLayer.innerHTML = '';
+    }, 1500);
+
+    showToast('要问你问题啦～ 💕');
+    setTimeout(() => switchStage('stage0', 'stage1'), 1500);
+  }
+});
+
+// 加载时展示两三张初始纸条
+setTimeout(() => {
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+  for (let i = 0; i < 3; i++) {
+    setTimeout(() => spawnNote(cx + (Math.random() - 0.5) * 250, cy - 80 + (Math.random() - 0.5) * 120), i * 200);
+  }
+}, 500);
 
 // ==================== Toast ====================
 function showToast(msg) {
