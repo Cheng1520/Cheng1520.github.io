@@ -2,397 +2,713 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>给你的一封信</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>给小柯宝宝 ❤</title>
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background: radial-gradient(ellipse at center, #2c1a3b 0%, #1a0a24 50%, #0d0015 100%);
-    cursor: pointer;
-    font-family: "Georgia", "STSong", "SimSun", "KaiTi", serif;
+    width: 100vw; min-height: 100vh;
+    background: radial-gradient(ellipse at center, #1a1028 0%, #0d0018 100%);
+    font-family: "PingFang SC", "Microsoft YaHei", "STSong", "KaiTi", serif;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
   }
 
-  /* 背景星星 */
-  .stars {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-  }
-  .star {
-    position: absolute;
-    background: white;
-    border-radius: 50%;
-    animation: twinkle var(--dur) ease-in-out infinite;
-    animation-delay: var(--delay);
-    opacity: 0;
-  }
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.2; transform: scale(1); }
-    50%      { opacity: 1;   transform: scale(1.8); }
+  /* === 星空背景 === */
+  #bgCanvas {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
   }
 
-  /* 提示文字 */
-  .hint {
-    position: fixed;
-    bottom: 40px;
-    width: 100%;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 16px;
-    letter-spacing: 4px;
-    animation: hintPulse 2s ease-in-out infinite;
-    pointer-events: none;
-    z-index: 1;
+  /* === 主容器 === */
+  .stage {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 30px 20px;
+    transition: opacity 0.6s, transform 0.6s;
   }
-  @keyframes hintPulse {
-    0%, 100% { opacity: 0.3; transform: translateY(0); }
-    50%      { opacity: 0.8; transform: translateY(-6px); }
+  .stage.hidden {
+    opacity: 0; transform: translateY(30px); pointer-events: none;
+    position: absolute; inset: 0;
   }
 
-  /* 标题 */
-  .title {
-    position: fixed;
-    top: 12%;
-    width: 100%;
-    text-align: center;
+  /* === 问题标题 === */
+  .q-title {
     color: #ffb8d4;
-    font-size: clamp(36px, 6vw, 60px);
+    font-size: clamp(24px, 5vw, 38px);
     font-weight: bold;
-    letter-spacing: 10px;
-    text-shadow: 0 0 40px rgba(255, 120, 180, 0.7), 0 0 80px rgba(255, 100, 160, 0.4);
-    pointer-events: none;
-    z-index: 1;
-    transition: opacity 0.8s;
-  }
-
-  /* 纸条容器 */
-  .notes-layer {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  /* 纸条 */
-  .note {
-    position: absolute;
-    padding: 28px 32px;
-    background: linear-gradient(135deg, #fffbeb 0%, #fff7d6 30%, #fff3c8 100%);
-    color: #3d1f00;
-    font-size: 22px;
-    font-weight: bold;
-    line-height: 2;
-    border-radius: 6px;
-    box-shadow:
-      0 8px 30px rgba(0,0,0,0.5),
-      0 0 60px rgba(255,220,120,0.35),
-      0 0 120px rgba(255,180,80,0.2);
-    pointer-events: none;
-    opacity: 0;
-    transform-origin: center center;
-    max-width: 320px;
-    min-width: 180px;
     text-align: center;
+    letter-spacing: 4px;
+    margin-bottom: 30px;
+    text-shadow: 0 0 30px rgba(255,150,200,0.6);
+    line-height: 1.6;
+  }
+
+  /* === 按钮 === */
+  .btn-row { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+
+  .btn {
+    border: none; outline: none;
+    padding: 16px 40px;
+    font-size: clamp(18px, 3vw, 24px);
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    letter-spacing: 4px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-family: inherit;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn:active { transform: scale(0.92); }
+
+  .btn-love {
+    background: linear-gradient(135deg, #ff6b9d, #e91e63);
+    color: #fff;
+    box-shadow: 0 8px 30px rgba(233,30,99,0.5);
+  }
+  .btn-love:hover { box-shadow: 0 12px 40px rgba(233,30,99,0.7); transform: translateY(-2px); }
+
+  .btn-no {
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.7);
+    border: 2px solid rgba(255,255,255,0.25);
+  }
+  .btn-no:hover { background: rgba(255,255,255,0.18); }
+
+  /* === Canvas 动画层 === */
+  #animCanvas {
+    position: fixed; inset: 0; z-index: 10; pointer-events: none;
+  }
+
+  /* === 理由输入 === */
+  .reason-box {
+    width: min(400px, 90vw);
+    min-height: 150px;
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(255,255,255,0.25);
+    border-radius: 16px;
+    color: #fff;
+    font-size: 18px;
+    padding: 16px;
+    resize: vertical;
+    font-family: inherit;
     letter-spacing: 2px;
+    line-height: 1.8;
+  }
+  .reason-box::placeholder { color: rgba(255,255,255,0.3); }
+  .reason-box:focus { outline: none; border-color: #ff6b9d; }
 
-    /* 纸条纹理 */
-    background-image:
-      repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 36px,
-        rgba(200,180,140,0.12) 36px,
-        rgba(200,180,140,0.12) 37px
-      );
+  /* === 排序列表 === */
+  .sort-list {
+    width: min(420px, 90vw);
+    display: flex; flex-direction: column;
+    gap: 10px;
+  }
+  .sort-item {
+    background: rgba(255,255,255,0.07);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 14px;
+    padding: 14px 18px;
+    color: #fff;
+    font-size: 18px;
+    letter-spacing: 2px;
+    cursor: grab;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: all 0.2s;
+    touch-action: none;
+  }
+  .sort-item:active { cursor: grabbing; }
+  .sort-item.drag-over { border-color: #ff6b9d; background: rgba(255,107,157,0.2); transform: scale(1.03); }
+  .sort-item.dragging { opacity: 0.4; }
+  .sort-rank {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, #ff6b9d, #e91e63);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: bold; color: #fff;
+    flex-shrink: 0; margin-right: 12px;
+  }
+  .sort-label { flex: 1; }
+
+  .sort-arrows {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .sort-arrow {
+    width: 28px; height: 22px;
+    border: none; background: rgba(255,255,255,0.15);
+    color: #fff; border-radius: 6px;
+    cursor: pointer; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .sort-arrow:hover { background: rgba(255,255,255,0.3); }
+  .sort-arrow:active { background: #e91e63; }
+
+  /* === 最终画面 === */
+  .final-text {
+    color: #ffb8d4;
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 6px;
+    line-height: 2;
+    text-shadow: 0 0 30px rgba(255,150,200,0.6);
+    animation: finalFadeIn 2s ease-out;
+  }
+  @keyframes finalFadeIn {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
-  .note::before {
-    content: '';
+  /* === 爱心雨 === */
+  .heart-rain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 5;
+  }
+  .heart-drop {
     position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 44px;
-    height: 14px;
-    background: #fce4b8;
-    border-radius: 3px 3px 0 0;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    animation: heartFall var(--fall-dur) linear forwards;
+    animation-delay: var(--fall-delay);
+    opacity: 0;
+    font-size: var(--size);
+  }
+  @keyframes heartFall {
+    0%   { opacity: 0; transform: translateY(-60px) rotate(0deg) scale(0.5); }
+    10%  { opacity: 1; }
+    80%  { opacity: 0.7; }
+    100% { opacity: 0; transform: translateY(105vh) rotate(360deg) scale(1.2); }
   }
 
-  /* 纸条折痕 */
-  .note::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(135deg, transparent 48%, rgba(0,0,0,0.03) 48%, rgba(0,0,0,0.03) 52%, transparent 52%),
-      linear-gradient(225deg, transparent 48%, rgba(0,0,0,0.02) 48%, rgba(0,0,0,0.02) 52%, transparent 52%);
-    border-radius: 3px;
-    pointer-events: none;
+  /* === 已发送提示 === */
+  .toast {
+    position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+    background: rgba(233,30,99,0.9); color: #fff;
+    padding: 12px 28px; border-radius: 30px;
+    font-size: 16px; letter-spacing: 3px;
+    z-index: 100; animation: toastIn 0.4s ease-out;
+  }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
   }
 
-  /* 粒子爱心 */
-  .particle {
-    position: absolute;
-    pointer-events: none;
-    z-index: 3;
-    animation: particleFly var(--fly-dur) ease-out forwards;
+  /* === 光标特效 === */
+  .click-ripple {
+    position: fixed; pointer-events: none; z-index: 20;
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 2px solid rgba(255,150,200,0.6);
+    animation: ripple 0.8s ease-out forwards;
   }
-  @keyframes particleFly {
-    0%   { opacity: 1; transform: translate(0, 0) scale(1); }
-    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0); }
-  }
-
-  /* 大爱心 */
-  .big-heart {
-    position: fixed;
-    pointer-events: none;
-    z-index: 10;
-    font-size: 80px;
-    animation: bigHeartPop 1.2s ease-out forwards;
-  }
-  @keyframes bigHeartPop {
-    0%   { opacity: 0; transform: scale(0) rotate(-15deg); }
-    30%  { opacity: 1; transform: scale(1.3) rotate(5deg); }
-    60%  { opacity: 1; transform: scale(0.9) rotate(-2deg); }
-    100% { opacity: 0; transform: scale(1.8) rotate(0deg) translateY(-160px); }
+  @keyframes ripple {
+    0% { opacity: 1; transform: scale(0); }
+    100% { opacity: 0; transform: scale(3); }
   }
 </style>
 </head>
 <body>
 
-<div class="stars" id="stars"></div>
+<canvas id="bgCanvas"></canvas>
+<canvas id="animCanvas"></canvas>
+<div class="heart-rain" id="heartRain"></div>
 
-<div class="title" id="title">❤ 我喜欢你 ❤</div>
+<!-- ===== Stage 1: 你喜欢我吗 ===== -->
+<div class="stage" id="stage1">
+  <div class="q-title">你喜欢我吗？</div>
+  <div class="btn-row">
+    <button class="btn btn-love" id="btnYes" onclick="handleLoveYes()">❤️ 喜欢</button>
+    <button class="btn btn-no" id="btnNo" onclick="handleLoveNo()">不喜欢</button>
+  </div>
+</div>
 
-<div class="notes-layer" id="notesLayer"></div>
+<!-- ===== Stage 2: 你愿意接受和我接吻吗 ===== -->
+<div class="stage hidden" id="stage2">
+  <div class="q-title">你愿意接受<br>和我接吻吗？</div>
+  <div class="btn-row" id="stage2Btns">
+    <button class="btn btn-love" onclick="handleKissYes()">💋 愿意</button>
+    <button class="btn btn-no" onclick="handleKissNo()">不愿意</button>
+  </div>
+  <div id="kissReasonWrap" style="display:none; text-align:center;">
+    <textarea class="reason-box" id="kissReason" placeholder="写下不愿意的理由…"></textarea>
+    <button class="btn btn-love" style="margin-top:20px;" onclick="submitKissReason()">提交理由 💌</button>
+  </div>
+</div>
 
-<div class="hint" id="hint">—— 点 击 屏 幕 任 意 位 置 ——</div>
+<!-- ===== Stage 3: 排序行程 ===== -->
+<div class="stage hidden" id="stage3">
+  <div class="q-title">帮我们的约会排个序吧 💕<br><span style="font-size:0.55em;color:rgba(255,255,255,0.5);">拖拽或点箭头调整顺序</span></div>
+  <div class="sort-list" id="sortList"></div>
+  <button class="btn btn-love" style="margin-top:28px;" onclick="submitSort()">排好啦！✨</button>
+</div>
+
+<!-- ===== Stage 4: 最终画面 ===== -->
+<div class="stage hidden" id="stage4">
+  <div class="final-text">
+    🌸 祝我的小柯宝宝 🌸<br>
+    <span style="font-size:1.3em;">💕 旅程愉快 💕</span>
+  </div>
+</div>
+
+<!-- ===== 隐藏表单用于发送邮件 ===== -->
+<form id="mailForm" action="https://formsubmit.co/king24364@qq.com" method="POST" style="display:none;">
+  <input type="hidden" name="_subject" id="mailSubject">
+  <input type="hidden" name="_template" value="table">
+  <input type="text" name="_honey" style="display:none">
+  <input type="hidden" name="content" id="mailContent">
+  <input type="hidden" name="type" id="mailType">
+</form>
 
 <script>
-  // ===== 表白话语库 =====
-  const messages = [
-    "遇见你的那天\n我听见了\n心动的声音",
-    "你的笑容\n是我见过\n最美的风景",
-    "想和你一起\n看遍世间\n所有的日落",
-    "在我的世界里\n你是唯一\n特别的存在",
-    "每次见到你\n我的心\n都会漏跳一拍",
-    "我愿意用\n一生的时间\n去读懂你",
-    "你就像星星\n照亮了我\n原本暗淡的夜空",
-    "有你在的每一天\n平凡都变得\n闪闪发光",
-    "我的目光\n总是忍不住\n追随你的身影",
-    "你一笑\n我的整个世界\n都亮了",
-    "想牵着你的手\n走过春夏秋冬\n看花开花落",
-    "我喜欢你\n像风走了八千里\n不问归期",
-    "世界很大\n但我的心很小\n只装得下你",
-    "你知道吗\n你是我平淡生活里\n最意外的惊喜",
-    "如果时光倒流\n我依然会\n选择遇见你",
-    "你是我今生\n最美的遇见\n也是我最想留住的幸运",
-    "我可以\n陪你走很长很长的路\n从清晨到日暮",
-    "你的眼睛\n藏着整个宇宙\n而我想去探索",
-    "和你有关的一切\n我都想\n小心翼翼地收藏",
-    "我喜欢你\n不是因为你有多好\n而是因为你就是你",
-    "从今以后\n你的每一个生日\n我都想陪你过",
-    "我曾见过很多风景\n但没有一处\n胜过你的眉眼",
-    "谢谢你来到\n我的世界\n让它充满色彩",
-    "我喜欢你\n认真且怂\n从一而终",
-    "每天醒来\n第一个想到的人\n就是你",
-    "你是我\n在这个世界上\n最大的贪心",
-    "想为你\n变成一个更好的人\n这是我的愿望",
-    "不管未来多漫长\n只要有你在\n我就不怕",
-    "你的名字\n是我见过\n最短的情书",
-    "我看过银河\n却只爱你\n这一颗星",
-    "喜欢你\n是我做过\n最勇敢的事",
-    "如果可以\n我想把余生\n都交给你",
-    "你的出现\n让我的世界\n从此不再孤单",
-    "和你在一起的时光\n我都想\n好好珍藏",
-    "你不需要多好\n我喜欢就好\n这是我的心意",
-    "我把思念\n写进风里\n希望它能吹到你身边",
-    "即使看过万千风景\n也不及\n你回眸一笑",
-    "如果有来生\n我依然选择\n在人海中找到你",
-    "谢谢你\n出现在我的生命里\n让我知道什么是心动",
-    "你是我\n翻山越岭\n也想见的人",
-    "我的人生\n因为有你\n才有了意义",
-    "每一颗星星\n都是我想你时\n种下的花",
-    "时间会流逝\n但我的喜欢\n不会改变",
-    "想和你一起\n在厨房里跳舞\n在雨天里奔跑",
-    "你是我写进诗里\n刻进心里\n永远的温柔",
-    "不管世界怎么变\n我喜欢你\n这件事不会变",
-    "我的好运\n都用来遇见你\n我一点也不后悔",
-    "你是我的\n始料未及\n也是我的念念不忘",
-    "愿未来的每一天\n醒来阳光和你\n都在",
-    "在我心里\n你永远是\n第一名",
-  ];
+// ==================== 星空背景 ====================
+const bgCanvas = document.getElementById('bgCanvas');
+const bgCtx = bgCanvas.getContext('2d');
+let stars = [];
 
-  // ===== DOM =====
-  const notesLayer = document.getElementById('notesLayer');
-  const title = document.getElementById('title');
-  const hint = document.getElementById('hint');
-  let noteCount = 0;
-  let clickCount = 0;
-  let titleHidden = false;
+function resizeBg() {
+  bgCanvas.width = window.innerWidth;
+  bgCanvas.height = window.innerHeight;
+}
+resizeBg();
+window.addEventListener('resize', () => { resizeBg(); initStars(); });
 
-  // ===== 生成背景星星 =====
-  const starsContainer = document.getElementById('stars');
-  for (let i = 0; i < 120; i++) {
-    const star = document.createElement('div');
-    star.className = 'star';
-    const size = Math.random() * 2.5 + 0.8;
-    star.style.cssText = `
-      width: ${size}px; height: ${size}px;
-      left: ${Math.random() * 100}%;
-      top: ${Math.random() * 100}%;
-      --dur: ${Math.random() * 2 + 1.5}s;
-      --delay: ${Math.random() * 3}s;
-    `;
-    starsContainer.appendChild(star);
+function initStars() {
+  stars = [];
+  const count = Math.floor((bgCanvas.width * bgCanvas.height) / 2000);
+  for (let i = 0; i < count; i++) {
+    stars.push({
+      x: Math.random() * bgCanvas.width,
+      y: Math.random() * bgCanvas.height,
+      r: Math.random() * 1.8 + 0.4,
+      twinkleSpeed: Math.random() * 0.02 + 0.005,
+      twinkleOffset: Math.random() * Math.PI * 2,
+      baseAlpha: Math.random() * 0.5 + 0.2,
+    });
   }
+}
+initStars();
 
-  // ===== 粒子爆发 =====
-  function burstParticles(x, y) {
-    const emojis = ['💕', '💗', '💖', '✨', '💝', '💘', '💓', '🌟', '💞', '🩷'];
-    const count = 18;
-    const frag = document.createDocumentFragment();
+function drawStars(time) {
+  bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+  for (const s of stars) {
+    const alpha = s.baseAlpha + Math.sin(time * s.twinkleSpeed + s.twinkleOffset) * 0.4;
+    bgCtx.fillStyle = `rgba(255,255,255,${Math.max(0, Math.min(1, alpha))})`;
+    bgCtx.beginPath();
+    bgCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    bgCtx.fill();
+  }
+}
 
-    for (let i = 0; i < count; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-      const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
-      const dist = 80 + Math.random() * 100;
-      const dx = Math.cos(angle) * dist;
-      const dy = Math.sin(angle) * dist;
-      const size = 24 + Math.random() * 28;
-      const dur = 600 + Math.random() * 500;
-      p.style.cssText = `
-        left: ${x}px; top: ${y}px;
-        font-size: ${size}px;
-        --dx: ${dx}px; --dy: ${dy}px;
-        --fly-dur: ${dur}ms;
-      `;
-      frag.appendChild(p);
+// ==================== 动画 Canvas ====================
+const animCanvas = document.getElementById('animCanvas');
+const animCtx = animCanvas.getContext('2d');
+let animParticles = [];
+
+function resizeAnim() {
+  animCanvas.width = window.innerWidth;
+  animCanvas.height = window.innerHeight;
+}
+resizeAnim();
+window.addEventListener('resize', resizeAnim);
+
+function spawnAnimParticles(x, y, color, count = 40) {
+  for (let i = 0; i < count; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 1 + Math.random() * 4;
+    animParticles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 1,
+      decay: 0.008 + Math.random() * 0.025,
+      size: 2 + Math.random() * 4,
+      color,
+    });
+  }
+}
+
+function drawHeartPath(ctx, cx, cy, size) {
+  ctx.beginPath();
+  const s = size / 16;
+  for (let t = 0; t < Math.PI * 2; t += 0.02) {
+    const x = cx + s * 16 * Math.pow(Math.sin(t), 3);
+    const y = cy - s * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+    if (t === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+}
+
+let heartAnim = null;   // { phase, cx, cy, size, startTime }
+let circleAnim = null;
+
+function startHeartAnim(cx, cy) {
+  heartAnim = { phase: 'grow', cx, cy, size: 0, targetSize: 160, startTime: performance.now(), trail: [] };
+}
+
+function startCircleAnim(cx, cy) {
+  circleAnim = { phase: 'draw', cx, cy, radius: 0, targetRadius: 130, startTime: performance.now(), trail: [] };
+}
+
+function drawAnimLayer(time) {
+  animCtx.clearRect(0, 0, animCanvas.width, animCanvas.height);
+
+  // 画爱心
+  if (heartAnim) {
+    const h = heartAnim;
+    if (h.phase === 'grow') {
+      h.size += (h.targetSize - h.size) * 0.06;
+      // trail sparkles
+      if (Math.random() < 0.6) {
+        h.trail.push({
+          x: h.cx + (Math.random() - 0.5) * h.size * 0.6,
+          y: h.cy + (Math.random() - 0.5) * h.size * 0.6,
+          life: 1, size: 1 + Math.random() * 3,
+        });
+      }
+      if (h.size >= h.targetSize * 0.98) { h.phase = 'pulse'; h.size = h.targetSize; }
+
+      animCtx.save();
+      animCtx.shadowColor = '#ff4081';
+      animCtx.shadowBlur = 40;
+      drawHeartPath(animCtx, h.cx, h.cy, h.size);
+      animCtx.fillStyle = '#ff4081';
+      animCtx.fill();
+      animCtx.shadowBlur = 80;
+      drawHeartPath(animCtx, h.cx, h.cy, h.size * 0.6);
+      animCtx.fillStyle = '#ff80ab';
+      animCtx.fill();
+      animCtx.restore();
+    } else if (h.phase === 'pulse') {
+      const pulse = 1 + Math.sin(time * 0.005) * 0.06;
+      const s = h.size * pulse;
+      animCtx.save();
+      animCtx.shadowColor = '#ff4081';
+      animCtx.shadowBlur = 40;
+      drawHeartPath(animCtx, h.cx, h.cy, s);
+      animCtx.fillStyle = '#ff4081';
+      animCtx.fill();
+      animCtx.shadowBlur = 80;
+      drawHeartPath(animCtx, h.cx, h.cy, s * 0.55);
+      animCtx.fillStyle = '#ff80ab';
+      animCtx.fill();
+      animCtx.restore();
     }
-    notesLayer.appendChild(frag);
-
-    // 清理粒子
-    setTimeout(() => {
-      const particles = notesLayer.querySelectorAll('.particle');
-      particles.forEach(p => p.remove());
-    }, 1200);
+    // trail
+    for (let i = h.trail.length - 1; i >= 0; i--) {
+      const t = h.trail[i];
+      t.life -= 0.015;
+      if (t.life <= 0) h.trail.splice(i, 1);
+      else {
+        animCtx.fillStyle = `rgba(255,150,200,${t.life})`;
+        animCtx.beginPath();
+        animCtx.arc(t.x, t.y, t.size, 0, Math.PI * 2);
+        animCtx.fill();
+      }
+    }
   }
 
-  // ===== 大爱心 =====
-  function bigHeart(x, y) {
-    const heart = document.createElement('div');
-    heart.className = 'big-heart';
-    heart.textContent = '❤️';
-    heart.style.left = (x - 40) + 'px';
-    heart.style.top = (y - 40) + 'px';
-    notesLayer.appendChild(heart);
-    setTimeout(() => heart.remove(), 1300);
+  // 画圆圈
+  if (circleAnim) {
+    const c = circleAnim;
+    if (c.phase === 'draw') {
+      c.radius += (c.targetRadius - c.radius) * 0.05;
+      if (c.radius >= c.targetRadius * 0.98) { c.phase = 'pulse'; c.radius = c.targetRadius; }
+    } else if (c.phase === 'pulse') {
+      c.radius = c.targetRadius + Math.sin(time * 0.004) * 8;
+    }
+    animCtx.save();
+    animCtx.shadowColor = '#ff80ab';
+    animCtx.shadowBlur = 30;
+    animCtx.strokeStyle = '#ff80ab';
+    animCtx.lineWidth = 4;
+    animCtx.beginPath();
+    animCtx.arc(c.cx, c.cy, c.radius, 0, Math.PI * 2);
+    animCtx.stroke();
+    // inner glow
+    animCtx.shadowBlur = 60;
+    animCtx.strokeStyle = 'rgba(255,180,200,0.6)';
+    animCtx.lineWidth = 2;
+    animCtx.beginPath();
+    animCtx.arc(c.cx, c.cy, c.radius * 0.94, 0, Math.PI * 2);
+    animCtx.stroke();
+    animCtx.restore();
+
+    // 文字
+    if (Math.sin(time * 0.003) > -0.5) {
+      animCtx.fillStyle = '#ffb8d4';
+      animCtx.font = 'bold 22px "PingFang SC","Microsoft YaHei",serif';
+      animCtx.textAlign = 'center';
+      animCtx.shadowColor = '#ff4081';
+      animCtx.shadowBlur = 15;
+      animCtx.fillText('画个圈圈代表我爱你', c.cx, c.cy + c.targetRadius + 50);
+      animCtx.shadowBlur = 0;
+    }
   }
 
-  // ===== 纸条 =====
-  function spawnNote(x, y) {
-    const msg = messages[Math.floor(Math.random() * messages.length)];
-    const note = document.createElement('div');
-    note.className = 'note';
-    note.textContent = msg;
+  // 粒子
+  for (let i = animParticles.length - 1; i >= 0; i--) {
+    const p = animParticles[i];
+    p.x += p.vx; p.y += p.vy;
+    p.life -= p.decay;
+    if (p.life <= 0) { animParticles.splice(i, 1); continue; }
+    animCtx.fillStyle = p.color.replace('1)', `${p.life})`);
+    animCtx.beginPath();
+    animCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    animCtx.fill();
+  }
+}
 
-    // 随机偏移（散得更开）
-    const offsetX = (Math.random() - 0.5) * 400;
-    const offsetY = (Math.random() - 0.5) * 360 - 50;
-    let nx = x + offsetX;
-    let ny = y + offsetY;
+// ==================== 爱心雨 ====================
+const heartRain = document.getElementById('heartRain');
+let rainInterval = null;
 
-    // 确保纸条不超出屏幕
-    const w = 320, h = 180;
-    nx = Math.max(10, Math.min(nx, window.innerWidth - w - 10));
-    ny = Math.max(10, Math.min(ny, window.innerHeight - h - 10));
-
-    const rotation = (Math.random() - 0.5) * 20;
-    const scale = 0.85 + Math.random() * 0.35;
-    note.style.cssText = `
-      left: ${nx}px;
-      top: ${ny}px;
-      transform: scale(0) rotate(${rotation}deg);
+function startHeartRain() {
+  if (rainInterval) return;
+  rainInterval = setInterval(() => {
+    const drop = document.createElement('div');
+    drop.className = 'heart-drop';
+    drop.textContent = ['💕', '💗', '💖', '💝', '💘', '✨', '🌸', '🩷'][Math.floor(Math.random() * 8)];
+    drop.style.cssText = `
+      left: ${Math.random() * 100}%;
+      top: -40px;
+      --fall-dur: ${2.5 + Math.random() * 4}s;
+      --fall-delay: ${Math.random() * 0.3}s;
+      --size: ${18 + Math.random() * 30}px;
     `;
+    heartRain.appendChild(drop);
+    setTimeout(() => drop.remove(), 7000);
+  }, 400);
+}
 
-    notesLayer.appendChild(note);
-    noteCount++;
+// ==================== 涟漪特效 ====================
+document.addEventListener('click', (e) => {
+  if (e.target.closest('.btn') || e.target.closest('.sort-item') || e.target.closest('.sort-arrow')) return;
+  const ripple = document.createElement('div');
+  ripple.className = 'click-ripple';
+  ripple.style.left = (e.clientX - 15) + 'px';
+  ripple.style.top = (e.clientY - 15) + 'px';
+  document.body.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 800);
+});
 
-    // 弹入动画（用RAF确保style已生效）
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        note.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-        note.style.opacity = '1';
-        note.style.transform = `scale(${scale}) rotate(${rotation + (Math.random()-0.5)*6}deg)`;
+// ==================== Toast ====================
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.5s'; }, 2000);
+  setTimeout(() => t.remove(), 2600);
+}
+
+// ==================== 阶段切换 ====================
+function switchStage(fromId, toId) {
+  const from = document.getElementById(fromId);
+  const to = document.getElementById(toId);
+  from.classList.add('hidden');
+  to.classList.remove('hidden');
+  to.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ==================== Stage 1: 你喜欢我吗 ====================
+let loveNoCount = 0;
+let loveBtnScale = 1;
+
+function handleLoveYes() {
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+  spawnAnimParticles(cx, cy, 'rgba(255,64,129,1)', 80);
+  startHeartAnim(cx, cy);
+  startHeartRain();
+  setTimeout(() => switchStage('stage1', 'stage2'), 1500);
+}
+
+function handleLoveNo() {
+  loveNoCount++;
+  loveBtnScale += 0.25;
+  const btn = document.getElementById('btnYes');
+  btn.style.transform = `scale(${loveBtnScale})`;
+  btn.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+  // 不喜欢按钮缩小
+  const noBtn = document.getElementById('btnNo');
+  noBtn.style.transform = `scale(${Math.max(0.4, 1 - loveNoCount * 0.15)})`;
+
+  const phrases = [
+    '真的不喜欢吗？🥺', '再想想嘛…💔', '给你一次机会重新选！', '我的心要碎了…😢',
+    '要不要再考虑一下？', '不许选这个！😠', '这个按钮快坏了…', '求求你点另一边吧 🙏',
+    '你忍心吗…💧', '不管，你必须喜欢我！'
+  ];
+  showToast(phrases[Math.min(loveNoCount - 1, phrases.length - 1)]);
+
+  if (loveNoCount >= 5) {
+    document.getElementById('btnNo').style.opacity = '0.3';
+    document.getElementById('btnNo').style.pointerEvents = 'none';
+  }
+}
+
+// ==================== Stage 2: 接吻 ====================
+function handleKissYes() {
+  showToast('💋 亲到了！');
+  spawnAnimParticles(window.innerWidth / 2, window.innerHeight / 2, 'rgba(255,128,171,1)', 60);
+  startCircleAnim(window.innerWidth / 2, window.innerHeight / 2 - 30);
+  setTimeout(() => switchStage('stage2', 'stage3'), 2000);
+}
+
+function handleKissNo() {
+  document.getElementById('stage2Btns').style.display = 'none';
+  document.getElementById('kissReasonWrap').style.display = 'block';
+}
+
+function submitKissReason() {
+  const reason = document.getElementById('kissReason').value.trim();
+  if (!reason) { showToast('请写下理由再提交哦～'); return; }
+  sendMail('不愿意接吻的理由', reason);
+  showToast('已收到你的理由～💌');
+  document.getElementById('kissReasonWrap').innerHTML =
+    '<p style="color:#ffb8d4;font-size:20px;letter-spacing:3px;">已收到你的心声 💌</p>';
+  setTimeout(() => switchStage('stage2', 'stage3'), 1200);
+}
+
+// ==================== Stage 3: 排序 ====================
+const places = [
+  '鱼尾州', '朝阳江滩公园', '双港汇创意产业园',
+  '万象城', '荔枝餐厅', '西西弗书店'
+];
+let sortOrder = [...places];
+
+function initSortList() {
+  const list = document.getElementById('sortList');
+  list.innerHTML = '';
+  sortOrder.forEach((place, i) => {
+    const item = document.createElement('div');
+    item.className = 'sort-item';
+    item.draggable = true;
+    item.dataset.index = i;
+    item.dataset.name = place;
+    item.innerHTML = `
+      <span class="sort-rank">${i + 1}</span>
+      <span class="sort-label">${place}</span>
+      <div class="sort-arrows">
+        <button class="sort-arrow" data-dir="up" ${i === 0 ? 'disabled' : ''}>▲</button>
+        <button class="sort-arrow" data-dir="down" ${i === sortOrder.length - 1 ? 'disabled' : ''}>▼</button>
+      </div>
+    `;
+    // Drag events
+    item.addEventListener('dragstart', onDragStart);
+    item.addEventListener('dragover', onDragOver);
+    item.addEventListener('dragleave', onDragLeave);
+    item.addEventListener('drop', onDrop);
+    item.addEventListener('dragend', onDragEnd);
+    // Arrow clicks
+    item.querySelectorAll('.sort-arrow').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const dir = btn.dataset.dir;
+        const idx = parseInt(item.dataset.index);
+        moveItem(idx, dir === 'up' ? -1 : 1);
       });
     });
-
-    // 5-8秒后渐隐
-    setTimeout(() => {
-      note.style.transition = 'opacity 0.8s ease-out';
-      note.style.opacity = '0';
-      setTimeout(() => note.remove(), 800);
-    }, 5000 + Math.random() * 3000);
-  }
-
-  // ===== 点击处理 =====
-  document.addEventListener('click', (e) => {
-    const x = e.clientX;
-    const y = e.clientY;
-    clickCount++;
-
-    // 隐藏提示和标题
-    if (!titleHidden && clickCount >= 3) {
-      title.style.opacity = '0';
-      hint.style.opacity = '0';
-      hint.style.transition = 'opacity 0.8s';
-      titleHidden = true;
-    }
-
-    // 隐藏初始提示
-    if (clickCount === 1) {
-      hint.textContent = '—— 再 点 几 下 试 试 看 ——';
-    }
-
-    // 粒子爆发 + 大爱心
-    burstParticles(x, y);
-    if (clickCount % 3 === 0) {
-      bigHeart(x, y);
-    }
-
-    // 每次点击生成8-12张纸条
-    const count = 8 + Math.floor(Math.random() * 5);
-    for (let i = 0; i < count; i++) {
-      setTimeout(() => spawnNote(x, y), i * 60);
-    }
+    list.appendChild(item);
   });
+}
 
-  // ===== 移动端触摸适配 =====
-  document.addEventListener('touchstart', (e) => {
-    // touchstart 正常触发 click，无需额外处理
-  }, { passive: true });
+function moveItem(fromIdx, delta) {
+  const toIdx = fromIdx + delta;
+  if (toIdx < 0 || toIdx >= sortOrder.length) return;
+  const [moved] = sortOrder.splice(fromIdx, 1);
+  sortOrder.splice(toIdx, 0, moved);
+  refreshSortUI();
+}
 
-  // ===== 加载完成展示初始纸条 =====
-  setTimeout(() => {
-    const cx = window.innerWidth / 2;
-    const cy = window.innerHeight / 2;
-    for (let i = 0; i < 4; i++) {
-      setTimeout(() => spawnNote(cx + (Math.random()-0.5)*200, cy - 100 + (Math.random()-0.5)*100), i * 150);
-    }
-  }, 600);
+let dragIdx = null;
+
+function onDragStart(e) {
+  dragIdx = parseInt(e.target.dataset.index);
+  e.target.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', e.target.dataset.name);
+}
+
+function onDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  e.target.closest('.sort-item')?.classList.add('drag-over');
+}
+
+function onDragLeave(e) {
+  e.target.closest('.sort-item')?.classList.remove('drag-over');
+}
+
+function onDrop(e) {
+  e.preventDefault();
+  e.target.closest('.sort-item')?.classList.remove('drag-over');
+  const targetItem = e.target.closest('.sort-item');
+  if (!targetItem || dragIdx === null) return;
+  const toIdx = parseInt(targetItem.dataset.index);
+  if (dragIdx === toIdx) return;
+  const [moved] = sortOrder.splice(dragIdx, 1);
+  sortOrder.splice(toIdx, 0, moved);
+  refreshSortUI();
+}
+
+function onDragEnd(e) {
+  e.target.classList.remove('dragging');
+  document.querySelectorAll('.sort-item').forEach(el => el.classList.remove('drag-over'));
+  dragIdx = null;
+}
+
+function refreshSortUI() {
+  const list = document.getElementById('sortList');
+  const items = list.querySelectorAll('.sort-item');
+  items.forEach((item, i) => {
+    item.dataset.index = i;
+    item.querySelector('.sort-rank').textContent = i + 1;
+    item.querySelector('.sort-label').textContent = sortOrder[i];
+    item.dataset.name = sortOrder[i];
+    // Update arrow disabled states
+    const [upBtn, downBtn] = item.querySelectorAll('.sort-arrow');
+    upBtn.disabled = i === 0;
+    downBtn.disabled = i === sortOrder.length - 1;
+  });
+}
+
+function submitSort() {
+  const ranked = sortOrder.map((p, i) => `${i + 1}. ${p}`).join('\n');
+  sendMail('小柯的行程排序', ranked);
+  showToast('已发送排序结果！✨');
+  setTimeout(() => switchStage('stage3', 'stage4'), 1000);
+}
+
+// ==================== 邮件发送 ====================
+function sendMail(subject, content) {
+  const form = document.getElementById('mailForm');
+  document.getElementById('mailSubject').value = subject;
+  document.getElementById('mailContent').value = content;
+  document.getElementById('mailType').value = subject;
+
+  // Try AJAX first
+  fetch('https://formsubmit.co/ajax/king24364@qq.com', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ subject: subject, content: content })
+  }).catch(() => {
+    // Fallback: open mailto
+    const mailto = `mailto:king24364@qq.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(content)}`;
+    window.open(mailto, '_blank');
+  });
+}
+
+// ==================== 主循环 ====================
+function mainLoop(time) {
+  drawStars(time);
+  drawAnimLayer(time);
+  requestAnimationFrame(mainLoop);
+}
+
+// ==================== 初始化 ====================
+initSortList();
+requestAnimationFrame(mainLoop);
 </script>
 </body>
 </html>
