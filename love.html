@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>给你的一封信</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: radial-gradient(ellipse at center, #2c1a3b 0%, #1a0a24 50%, #0d0015 100%);
+    cursor: pointer;
+    font-family: "Georgia", "STSong", "SimSun", "KaiTi", serif;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* 背景星星 */
+  .stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+  }
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--dur) ease-in-out infinite;
+    animation-delay: var(--delay);
+    opacity: 0;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.8); }
+  }
+
+  /* 提示文字 */
+  .hint {
+    position: fixed;
+    bottom: 40px;
+    width: 100%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 16px;
+    letter-spacing: 4px;
+    animation: hintPulse 2s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+  @keyframes hintPulse {
+    0%, 100% { opacity: 0.3; transform: translateY(0); }
+    50%      { opacity: 0.8; transform: translateY(-6px); }
+  }
+
+  /* 标题 */
+  .title {
+    position: fixed;
+    top: 15%;
+    width: 100%;
+    text-align: center;
+    color: #f8c8dc;
+    font-size: clamp(28px, 5vw, 48px);
+    letter-spacing: 8px;
+    text-shadow: 0 0 30px rgba(255, 150, 200, 0.5);
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 0.8s;
+  }
+
+  /* 纸条容器 */
+  .notes-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* 纸条 */
+  .note {
+    position: absolute;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, #fffef5 0%, #fff9e6 40%, #fef5e0 100%);
+    color: #5a3e2b;
+    font-size: 18px;
+    line-height: 1.8;
+    border-radius: 3px;
+    box-shadow:
+      2px 3px 10px rgba(0,0,0,0.3),
+      0 0 40px rgba(255,200,150,0.15);
+    pointer-events: none;
+    opacity: 0;
+    transform-origin: center center;
+    max-width: 260px;
+    text-align: center;
+    letter-spacing: 1px;
+
+    /* 纸条纹理 */
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 28px,
+        rgba(200,180,160,0.15) 28px,
+        rgba(200,180,160,0.15) 29px
+      );
+  }
+
+  .note::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 12px;
+    background: #f0dcc5;
+    border-radius: 2px 2px 0 0;
+    box-shadow: inset 0 2px 3px rgba(0,0,0,0.1);
+  }
+
+  /* 纸条折痕 */
+  .note::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, transparent 48%, rgba(0,0,0,0.03) 48%, rgba(0,0,0,0.03) 52%, transparent 52%),
+      linear-gradient(225deg, transparent 48%, rgba(0,0,0,0.02) 48%, rgba(0,0,0,0.02) 52%, transparent 52%);
+    border-radius: 3px;
+    pointer-events: none;
+  }
+
+  /* 粒子爱心 */
+  .particle {
+    position: absolute;
+    pointer-events: none;
+    z-index: 3;
+    animation: particleFly var(--fly-dur) ease-out forwards;
+  }
+  @keyframes particleFly {
+    0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0); }
+  }
+
+  /* 大爱心 */
+  .big-heart {
+    position: fixed;
+    pointer-events: none;
+    z-index: 10;
+    font-size: 80px;
+    animation: bigHeartPop 1.2s ease-out forwards;
+  }
+  @keyframes bigHeartPop {
+    0%   { opacity: 0; transform: scale(0) rotate(-15deg); }
+    30%  { opacity: 1; transform: scale(1.3) rotate(5deg); }
+    60%  { opacity: 1; transform: scale(0.9) rotate(-2deg); }
+    100% { opacity: 0; transform: scale(1.8) rotate(0deg) translateY(-160px); }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="title" id="title">❤ 我喜欢你 ❤</div>
+
+<div class="notes-layer" id="notesLayer"></div>
+
+<div class="hint" id="hint">—— 点 击 屏 幕 任 意 位 置 ——</div>
+
+<script>
+  // ===== 表白话语库 =====
+  const messages = [
+    "遇见你的那天\n我听见了\n心动的声音",
+    "你的笑容\n是我见过\n最美的风景",
+    "想和你一起\n看遍世间\n所有的日落",
+    "在我的世界里\n你是唯一\n特别的存在",
+    "每次见到你\n我的心\n都会漏跳一拍",
+    "我愿意用\n一生的时间\n去读懂你",
+    "你就像星星\n照亮了我\n原本暗淡的夜空",
+    "有你在的每一天\n平凡都变得\n闪闪发光",
+    "我的目光\n总是忍不住\n追随你的身影",
+    "你一笑\n我的整个世界\n都亮了",
+    "想牵着你的手\n走过春夏秋冬\n看花开花落",
+    "我喜欢你\n像风走了八千里\n不问归期",
+    "世界很大\n但我的心很小\n只装得下你",
+    "你知道吗\n你是我平淡生活里\n最意外的惊喜",
+    "如果时光倒流\n我依然会\n选择遇见你",
+    "你是我今生\n最美的遇见\n也是我最想留住的幸运",
+    "我可以\n陪你走很长很长的路\n从清晨到日暮",
+    "你的眼睛\n藏着整个宇宙\n而我想去探索",
+    "和你有关的一切\n我都想\n小心翼翼地收藏",
+    "我喜欢你\n不是因为你有多好\n而是因为你就是你",
+    "从今以后\n你的每一个生日\n我都想陪你过",
+    "我曾见过很多风景\n但没有一处\n胜过你的眉眼",
+    "谢谢你来到\n我的世界\n让它充满色彩",
+    "我喜欢你\n认真且怂\n从一而终",
+    "每天醒来\n第一个想到的人\n就是你",
+    "你是我\n在这个世界上\n最大的贪心",
+    "想为你\n变成一个更好的人\n这是我的愿望",
+    "不管未来多漫长\n只要有你在\n我就不怕",
+    "你的名字\n是我见过\n最短的情书",
+    "我看过银河\n却只爱你\n这一颗星",
+    "喜欢你\n是我做过\n最勇敢的事",
+    "如果可以\n我想把余生\n都交给你",
+    "你的出现\n让我的世界\n从此不再孤单",
+    "和你在一起的时光\n我都想\n好好珍藏",
+    "你不需要多好\n我喜欢就好\n这是我的心意",
+    "我把思念\n写进风里\n希望它能吹到你身边",
+    "即使看过万千风景\n也不及\n你回眸一笑",
+    "如果有来生\n我依然选择\n在人海中找到你",
+    "谢谢你\n出现在我的生命里\n让我知道什么是心动",
+    "你是我\n翻山越岭\n也想见的人",
+    "我的人生\n因为有你\n才有了意义",
+    "每一颗星星\n都是我想你时\n种下的花",
+    "时间会流逝\n但我的喜欢\n不会改变",
+    "想和你一起\n在厨房里跳舞\n在雨天里奔跑",
+    "你是我写进诗里\n刻进心里\n永远的温柔",
+    "不管世界怎么变\n我喜欢你\n这件事不会变",
+    "我的好运\n都用来遇见你\n我一点也不后悔",
+    "你是我的\n始料未及\n也是我的念念不忘",
+    "愿未来的每一天\n醒来阳光和你\n都在",
+    "在我心里\n你永远是\n第一名",
+  ];
+
+  // ===== DOM =====
+  const notesLayer = document.getElementById('notesLayer');
+  const title = document.getElementById('title');
+  const hint = document.getElementById('hint');
+  let noteCount = 0;
+  let clickCount = 0;
+  let titleHidden = false;
+
+  // ===== 生成背景星星 =====
+  const starsContainer = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = Math.random() * 2.5 + 0.8;
+    star.style.cssText = `
+      width: ${size}px; height: ${size}px;
+      left: ${Math.random() * 100}%;
+      top: ${Math.random() * 100}%;
+      --dur: ${Math.random() * 2 + 1.5}s;
+      --delay: ${Math.random() * 3}s;
+    `;
+    starsContainer.appendChild(star);
+  }
+
+  // ===== 粒子爆发 =====
+  function burstParticles(x, y) {
+    const emojis = ['💕', '💗', '💖', '✨', '💝', '💘', '💓', '🌟', '💞', '🩷'];
+    const count = 18;
+    const frag = document.createDocumentFragment();
+
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
+      const dist = 80 + Math.random() * 100;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist;
+      const size = 16 + Math.random() * 20;
+      const dur = 600 + Math.random() * 500;
+      p.style.cssText = `
+        left: ${x}px; top: ${y}px;
+        font-size: ${size}px;
+        --dx: ${dx}px; --dy: ${dy}px;
+        --fly-dur: ${dur}ms;
+      `;
+      frag.appendChild(p);
+    }
+    notesLayer.appendChild(frag);
+
+    // 清理粒子
+    setTimeout(() => {
+      const particles = notesLayer.querySelectorAll('.particle');
+      particles.forEach(p => p.remove());
+    }, 1200);
+  }
+
+  // ===== 大爱心 =====
+  function bigHeart(x, y) {
+    const heart = document.createElement('div');
+    heart.className = 'big-heart';
+    heart.textContent = '❤️';
+    heart.style.left = (x - 40) + 'px';
+    heart.style.top = (y - 40) + 'px';
+    notesLayer.appendChild(heart);
+    setTimeout(() => heart.remove(), 1300);
+  }
+
+  // ===== 纸条 =====
+  function spawnNote(x, y) {
+    const msg = messages[Math.floor(Math.random() * messages.length)];
+    const note = document.createElement('div');
+    note.className = 'note';
+    note.textContent = msg;
+
+    // 随机偏移（落在点击位置附近）
+    const offsetX = (Math.random() - 0.5) * 300;
+    const offsetY = (Math.random() - 0.5) * 260 - 40;
+    let nx = x + offsetX;
+    let ny = y + offsetY;
+
+    // 确保纸条不超出屏幕
+    const w = 260, h = 140;
+    nx = Math.max(10, Math.min(nx, window.innerWidth - w - 10));
+    ny = Math.max(10, Math.min(ny, window.innerHeight - h - 10));
+
+    const rotation = (Math.random() - 0.5) * 20;
+    const scale = 0.85 + Math.random() * 0.35;
+    note.style.cssText = `
+      left: ${nx}px;
+      top: ${ny}px;
+      transform: scale(0) rotate(${rotation}deg);
+    `;
+
+    notesLayer.appendChild(note);
+    noteCount++;
+
+    // 弹入动画（用RAF确保style已生效）
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        note.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        note.style.opacity = '1';
+        note.style.transform = `scale(${scale}) rotate(${rotation + (Math.random()-0.5)*6}deg)`;
+      });
+    });
+
+    // 3.5秒后渐隐
+    setTimeout(() => {
+      note.style.transition = 'opacity 0.6s ease-out';
+      note.style.opacity = '0';
+      setTimeout(() => note.remove(), 600);
+    }, 2800 + Math.random() * 1500);
+  }
+
+  // ===== 点击处理 =====
+  document.addEventListener('click', (e) => {
+    const x = e.clientX;
+    const y = e.clientY;
+    clickCount++;
+
+    // 隐藏提示和标题
+    if (!titleHidden && clickCount >= 3) {
+      title.style.opacity = '0';
+      hint.style.opacity = '0';
+      hint.style.transition = 'opacity 0.8s';
+      titleHidden = true;
+    }
+
+    // 隐藏初始提示
+    if (clickCount === 1) {
+      hint.textContent = '—— 再 点 几 下 试 试 看 ——';
+    }
+
+    // 粒子爆发 + 大爱心
+    burstParticles(x, y);
+    if (clickCount % 3 === 0) {
+      bigHeart(x, y);
+    }
+
+    // 每次点击生成5-8张纸条
+    const count = 5 + Math.floor(Math.random() * 4);
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => spawnNote(x, y), i * 60);
+    }
+  });
+
+  // ===== 移动端触摸适配 =====
+  document.addEventListener('touchstart', (e) => {
+    // touchstart 正常触发 click，无需额外处理
+  }, { passive: true });
+
+  // ===== 加载完成展示初始纸条 =====
+  setTimeout(() => {
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    for (let i = 0; i < 4; i++) {
+      setTimeout(() => spawnNote(cx + (Math.random()-0.5)*200, cy - 100 + (Math.random()-0.5)*100), i * 150);
+    }
+  }, 600);
+</script>
+</body>
+</html>
