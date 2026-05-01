@@ -535,7 +535,7 @@ function startHeartAnim(cx, cy) {
 }
 
 function startCircleAnim(cx, cy) {
-  circleAnim = { phase: 'draw', cx, cy, radius: 0, targetRadius: 130, startTime: performance.now(), trail: [] };
+  circleAnim = { phase: 'draw', cx, cy, radius: 0, targetRadius: 130, startTime: performance.now(), trail: [], pulseStart: 0, fireworksSpawned: false };
 }
 
 function drawAnimLayer(time) {
@@ -622,50 +622,89 @@ function drawAnimLayer(time) {
     const c = circleAnim;
     if (c.phase === 'draw') {
       c.radius += (c.targetRadius - c.radius) * 0.05;
-      if (c.radius >= c.targetRadius * 0.98) { c.phase = 'pulse'; c.radius = c.targetRadius; }
+      if (c.radius >= c.targetRadius * 0.98) { c.phase = 'pulse'; c.radius = c.targetRadius; c.pulseStart = time; }
     } else if (c.phase === 'pulse') {
       c.radius = c.targetRadius + Math.sin(time * 0.004) * 8;
+      // 2秒后变烟花
+      if (time - c.pulseStart > 2000) { c.phase = 'fireworks'; c.fireworkStart = time; }
+    } else if (c.phase === 'fireworks') {
+      const elapsed = time - c.fireworkStart;
+      // 持续生成烟花粒子
+      if (!c.fireworksSpawned) {
+        c.fireworksSpawned = true;
+        const colors = ['#ff4081','#ff80ab','#ffd700','#ffa0c0','#c084fc','#ff6b9d','#ffe066','#80d8ff'];
+        for (let i = 0; i < 200; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 2 + Math.random() * 7;
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          animParticles.push({
+            x: c.cx, y: c.cy,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - 2,
+            life: 1,
+            decay: 0.005 + Math.random() * 0.02,
+            size: 2 + Math.random() * 5,
+            color: color.replace(')', ',1)'),
+            gravity: 0.03 + Math.random() * 0.05,
+          });
+        }
+      }
+      // 显示烟花期间闪一下文字
+      if (elapsed < 1500 && Math.sin(time * 0.006) > -0.3) {
+        animCtx.fillStyle = '#ffd700';
+        animCtx.font = 'bold 20px "PingFang SC","Microsoft YaHei",serif';
+        animCtx.textAlign = 'center';
+        animCtx.shadowColor = '#ff80ab';
+        animCtx.shadowBlur = 20;
+        animCtx.fillText('🎆 我爱你 🎆', c.cx, c.cy + c.targetRadius + 60);
+        animCtx.shadowBlur = 0;
+      }
+      if (elapsed > 1800) { c.phase = 'done'; }
     }
-    animCtx.save();
-    animCtx.shadowColor = '#ff80ab';
-    animCtx.shadowBlur = 30;
-    animCtx.strokeStyle = '#ff80ab';
-    animCtx.lineWidth = 4;
-    animCtx.beginPath();
-    animCtx.arc(c.cx, c.cy, c.radius, 0, Math.PI * 2);
-    animCtx.stroke();
-    // inner glow
-    animCtx.shadowBlur = 60;
-    animCtx.strokeStyle = 'rgba(255,180,200,0.6)';
-    animCtx.lineWidth = 2;
-    animCtx.beginPath();
-    animCtx.arc(c.cx, c.cy, c.radius * 0.94, 0, Math.PI * 2);
-    animCtx.stroke();
-    animCtx.restore();
 
-    // 文字
-    if (Math.sin(time * 0.003) > -0.5) {
-      animCtx.fillStyle = '#ffb8d4';
-      animCtx.font = 'bold 22px "PingFang SC","Microsoft YaHei",serif';
-      animCtx.textAlign = 'center';
-      animCtx.shadowColor = '#ff4081';
-      animCtx.shadowBlur = 15;
-      animCtx.fillText('画个圈圈代表我爱你', c.cx, c.cy + c.targetRadius + 50);
-      animCtx.shadowBlur = 0;
+    if (c.phase !== 'done' && c.phase !== 'fireworks') {
+      animCtx.save();
+      animCtx.shadowColor = '#ff80ab';
+      animCtx.shadowBlur = 30;
+      animCtx.strokeStyle = '#ff80ab';
+      animCtx.lineWidth = 4;
+      animCtx.beginPath();
+      animCtx.arc(c.cx, c.cy, c.radius, 0, Math.PI * 2);
+      animCtx.stroke();
+      animCtx.shadowBlur = 60;
+      animCtx.strokeStyle = 'rgba(255,180,200,0.6)';
+      animCtx.lineWidth = 2;
+      animCtx.beginPath();
+      animCtx.arc(c.cx, c.cy, c.radius * 0.94, 0, Math.PI * 2);
+      animCtx.stroke();
+      animCtx.restore();
+
+      if (c.phase === 'pulse' && Math.sin(time * 0.003) > -0.5) {
+        animCtx.fillStyle = '#ffb8d4';
+        animCtx.font = 'bold 22px "PingFang SC","Microsoft YaHei",serif';
+        animCtx.textAlign = 'center';
+        animCtx.shadowColor = '#ff4081';
+        animCtx.shadowBlur = 15;
+        animCtx.fillText('画个圈圈代表我爱你', c.cx, c.cy + c.targetRadius + 50);
+        animCtx.shadowBlur = 0;
+      }
     }
   }
 
-  // 粒子
+  // 粒子（含烟花）
   for (let i = animParticles.length - 1; i >= 0; i--) {
     const p = animParticles[i];
     p.x += p.vx; p.y += p.vy;
+    if (p.gravity) p.vy += p.gravity;
     p.life -= p.decay;
     if (p.life <= 0) { animParticles.splice(i, 1); continue; }
-    animCtx.fillStyle = p.color.replace('1)', `${p.life})`);
+    animCtx.globalAlpha = p.life;
+    animCtx.fillStyle = p.color.replace(',1)', `,${p.life})`);
     animCtx.beginPath();
     animCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
     animCtx.fill();
   }
+  animCtx.globalAlpha = 1;
 }
 
 // ==================== 爱心雨 ====================
@@ -969,7 +1008,8 @@ function handleKissYes() {
   showToast('💋 亲到了！');
   spawnAnimParticles(window.innerWidth / 2, window.innerHeight / 2, 'rgba(255,128,171,1)', 60);
   startCircleAnim(window.innerWidth / 2, window.innerHeight / 2 - 30);
-  setTimeout(() => switchStage('stage2', 'stage3'), 2000);
+  // draw(~0.5s) + pulse(2s) + fireworks(1.8s) = ~4.5s
+  setTimeout(() => switchStage('stage2', 'stage3'), 4500);
 }
 
 function handleKissNo() {
@@ -1155,8 +1195,6 @@ function submitMessage() {
   const content = `来自：${name}\n\n想说的话：\n${msg}`;
   sendMail(`${name} 想对你说的话`, content);
   showToast('已收到你的心里话～💕');
-  // 启动超级爱心雨
-  startHeavyHeartRain();
   setTimeout(() => switchStage('stage5', 'stage6'), 1200);
 }
 
@@ -1181,8 +1219,8 @@ function startHeavyHeartRain() {
       setTimeout(() => drop.remove(), 8000);
     }
   }, 150);
-  // 30 秒后恢复正常速度
-  setTimeout(() => { clearInterval(heavyInterval); startHeartRain(); }, 30000);
+  // 3 秒后自动停止
+  setTimeout(() => { clearInterval(heavyInterval); }, 3000);
 }
 
 // ==================== 邮件发送 ====================
