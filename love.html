@@ -273,6 +273,62 @@
     100% { opacity: 0; transform: scale(2) rotate(0deg) translateY(-200px); }
   }
 
+  /* === 闪回幻灯片 === */
+  .flash-container {
+    width: min(90vw, 420px); height: 320px;
+    position: relative; overflow: hidden;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .flash-card {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,200,220,0.12));
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 20px;
+    transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1.2), opacity 0.6s;
+    transform: translateX(100%); opacity: 0;
+  }
+  .flash-card.active { transform: translateX(0); opacity: 1; }
+  .flash-card.exit { transform: translateX(-100%); opacity: 0; }
+  .flash-emoji { font-size: 80px; }
+  .flash-text {
+    color: #ffdee9;
+    font-size: 24px; font-weight: bold;
+    letter-spacing: 4px; text-align: center;
+    line-height: 1.8;
+    text-shadow: 0 0 20px rgba(255,150,200,0.4);
+  }
+  .flash-dots {
+    display: flex; gap: 8px; margin-top: 10px;
+  }
+  .flash-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    transition: all 0.3s;
+  }
+  .flash-dot.current { background: #ff80ab; box-shadow: 0 0 8px #ff4081; transform: scale(1.4); }
+
+  /* === 留言阶段 === */
+  .msg-box {
+    width: min(400px, 88vw);
+    min-height: 180px;
+    background: rgba(255,255,255,0.07);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 18px;
+    color: #fff;
+    font-size: 18px;
+    padding: 18px;
+    resize: vertical;
+    font-family: inherit;
+    letter-spacing: 2px;
+    line-height: 1.8;
+  }
+  .msg-box::placeholder { color: rgba(255,255,255,0.25); }
+  .msg-box:focus { outline: none; border-color: #ff80ab; box-shadow: 0 0 20px rgba(255,128,171,0.15); }
+
   /* 进度条 */
   .progress-bar-wrap {
     position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
@@ -326,15 +382,56 @@
   </div>
 </div>
 
-<!-- ===== Stage 3: 排序行程 ===== -->
+<!-- ===== Stage 3: 闪回动画 ===== -->
 <div class="stage hidden" id="stage3">
+  <div class="q-title">我们一起去… ✨</div>
+  <div class="flash-container" id="flashContainer">
+    <div class="flash-card active" data-idx="0">
+      <span class="flash-emoji">🍽️</span>
+      <span class="flash-text">在荔枝餐厅<br>一起吃晚饭</span>
+    </div>
+    <div class="flash-card" data-idx="1">
+      <span class="flash-emoji">📚</span>
+      <span class="flash-text">在西西弗书店<br>一起看书喝咖啡</span>
+    </div>
+    <div class="flash-card" data-idx="2">
+      <span class="flash-emoji">🌅</span>
+      <span class="flash-text">在朝阳江滩公园<br>看最美的日落</span>
+    </div>
+    <div class="flash-card" data-idx="3">
+      <span class="flash-emoji">🛍️</span>
+      <span class="flash-text">在万象城<br>牵手逛街</span>
+    </div>
+    <div class="flash-card" data-idx="4">
+      <span class="flash-emoji">🚶‍♀️</span>
+      <span class="flash-text">在鱼尾州<br>吹着晚风散步</span>
+    </div>
+    <div class="flash-card" data-idx="5">
+      <span class="flash-emoji">📸</span>
+      <span class="flash-text">在双港汇<br>拍好多好多照片</span>
+    </div>
+  </div>
+  <div class="flash-dots" id="flashDots"></div>
+  <button class="btn btn-love" style="margin-top:24px;padding:12px 36px;font-size:16px;" onclick="skipFlash()">跳过 →</button>
+</div>
+
+<!-- ===== Stage 4: 排序行程 ===== -->
+<div class="stage hidden" id="stage4">
   <div class="q-title">帮我们的约会排个序吧 💕<br><span style="font-size:0.55em;color:rgba(255,255,255,0.5);">拖拽或点箭头调整顺序</span></div>
   <div class="sort-list" id="sortList"></div>
   <button class="btn btn-love" style="margin-top:28px;" onclick="submitSort()">排好啦！✨</button>
 </div>
 
-<!-- ===== Stage 4: 最终画面 ===== -->
-<div class="stage hidden" id="stage4">
+<!-- ===== Stage 5: 留言 ===== -->
+<div class="stage hidden" id="stage5">
+  <div class="q-title">最后…<br>写一段想对我说的话吧 💌</div>
+  <input type="text" class="msg-box" id="senderName" placeholder="你的名字" style="min-height:auto;margin-bottom:14px;padding:14px 18px;">
+  <textarea class="msg-box" id="finalMessage" placeholder="写下你想说的话…"></textarea>
+  <button class="btn btn-love" style="margin-top:24px;" onclick="submitMessage()">发送给我 💕</button>
+</div>
+
+<!-- ===== Stage 6: 最终画面 ===== -->
+<div class="stage hidden" id="stage6">
   <div class="final-text">
     🌸 祝我的小柯宝宝 🌸<br>
     <span style="font-size:1.3em;">💕 旅程愉快 💕</span>
@@ -430,16 +527,11 @@ function drawHeartPath(ctx, cx, cy, size) {
   ctx.closePath();
 }
 
-let heartAnim = null;   // { phase, cx, cy, size, targetX, targetY, driftStart, driftDur, startTime }
+let heartAnim = null;   // { phase, cx, cy, size, startTime }
 let circleAnim = null;
 
-function startHeartAnim(cx, cy, toX, toY) {
-  heartAnim = {
-    phase: 'grow', cx, cy, size: 0, targetSize: 160,
-    targetX: toX, targetY: toY,
-    driftStart: 0, driftDur: 1800,
-    startTime: performance.now(), trail: [],
-  };
+function startHeartAnim(cx, cy) {
+  heartAnim = { phase: 'grow', cx, cy, size: 0, targetSize: 160, startTime: performance.now(), trail: [] };
 }
 
 function startCircleAnim(cx, cy) {
@@ -478,13 +570,8 @@ function drawAnimLayer(time) {
     } else if (h.phase === 'pulse') {
       const pulse = 1 + Math.sin(time * 0.005) * 0.06;
       const s = h.size * pulse;
-      // 1.2秒后开始飘走
-      if (time - h.pulseStart > 1200) {
-        h.phase = 'drift';
-        h.driftStart = time;
-        h.driftFromX = h.cx;
-        h.driftFromY = h.cy;
-      }
+      // 1.5秒后开始淡出
+      if (time - h.pulseStart > 1500) { h.phase = 'fade'; h.fadeStart = time; }
 
       animCtx.save();
       animCtx.globalAlpha = 1;
@@ -498,56 +585,23 @@ function drawAnimLayer(time) {
       animCtx.fillStyle = '#ff80ab';
       animCtx.fill();
       animCtx.restore();
-    } else if (h.phase === 'drift') {
-      const elapsed = time - h.driftStart;
-      const t = Math.min(1, elapsed / h.driftDur);
-      // ease-in-out
-      const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-      h.cx = h.driftFromX + (h.targetX - h.driftFromX) * ease;
-      h.cy = h.driftFromY + (h.targetY - h.driftFromY) * ease;
-      // 缩小 + 半透明
-      const s = h.targetSize * (1 - t * 0.5);
-      const alpha = 1 - t * 0.4;
-
+    } else if (h.phase === 'fade') {
+      const elapsed = time - h.fadeStart;
+      const alpha = Math.max(0, 1 - elapsed / 600);
+      const s = h.size * (1 + elapsed / 600 * 0.3);
       animCtx.save();
       animCtx.globalAlpha = alpha;
       animCtx.shadowColor = '#ff4081';
-      animCtx.shadowBlur = 30 * (1 - t * 0.5);
+      animCtx.shadowBlur = 30 * alpha;
       drawHeartPath(animCtx, h.cx, h.cy, s);
       animCtx.fillStyle = '#ff4081';
       animCtx.fill();
-      animCtx.shadowBlur = 50 * (1 - t * 0.5);
+      animCtx.shadowBlur = 50 * alpha;
       drawHeartPath(animCtx, h.cx, h.cy, s * 0.55);
       animCtx.fillStyle = '#ff80ab';
       animCtx.fill();
       animCtx.restore();
-
-      // 闪现文字 "爱意随风起"
-      if (t > 0.15) {
-        const textAlpha = Math.sin((t - 0.15) * Math.PI * 2) * 0.5 + 0.5;
-        const fontSize = 26 + Math.sin(t * 8) * 4;
-        animCtx.save();
-        animCtx.globalAlpha = textAlpha * alpha;
-        animCtx.fillStyle = '#ffb8d4';
-        animCtx.font = `bold ${fontSize}px "PingFang SC","KaiTi","Microsoft YaHei",serif`;
-        animCtx.textAlign = 'center';
-        animCtx.shadowColor = '#ff4081';
-        animCtx.shadowBlur = 20;
-        animCtx.fillText('爱意随风起', h.cx, h.cy - s * 0.8);
-        animCtx.shadowBlur = 0;
-        animCtx.restore();
-      }
-
-      // 飘走的粒子尾迹
-      if (Math.random() < 0.5) {
-        h.trail.push({
-          x: h.cx + (Math.random() - 0.5) * s * 0.5,
-          y: h.cy + (Math.random() - 0.5) * s * 0.5,
-          life: 0.6, size: 1 + Math.random() * 3,
-        });
-      }
-
-      if (t >= 1) { h.phase = 'done'; }
+      if (alpha <= 0) { h.phase = 'done'; }
     }
     // trail
     for (let i = h.trail.length - 1; i >= 0; i--) {
@@ -636,10 +690,10 @@ function startHeartRain() {
   }, 400);
 }
 
-// ==================== 涟漪特效 ====================
+// ==================== 涟漪特效（全阶段可用，不拦截业务逻辑）====================
 document.addEventListener('click', (e) => {
   if (e.target.closest('.btn') || e.target.closest('.sort-item') || e.target.closest('.sort-arrow')) return;
-  if (e.target.closest('#stage1') || e.target.closest('#stage2') || e.target.closest('#stage3') || e.target.closest('#stage4')) return;
+  if (e.target.closest('textarea') || e.target.closest('input')) return;
   const ripple = document.createElement('div');
   ripple.className = 'click-ripple';
   ripple.style.left = (e.clientX - 15) + 'px';
@@ -776,10 +830,12 @@ function updateProgress() {
     noteClicks < MAX_NOTE_CLICKS ? `还剩 ${MAX_NOTE_CLICKS - noteClicks} 下 ✨` : '';
 }
 
-// Stage 0 点击处理
-document.getElementById('stage0').addEventListener('click', (e) => {
+// Stage 0 点击处理 —— 用 document 级别保证手机也能触发
+document.addEventListener('click', function stage0Handler(e) {
   if (!stage0Active) return;
-  if (e.target.closest('.btn')) return;
+  if (e.target.closest('.btn') || e.target.closest('.sort-item') || e.target.closest('.sort-arrow')) return;
+  if (e.target.closest('#stage1') || e.target.closest('#stage2') || e.target.closest('#stage3') ||
+      e.target.closest('#stage4') || e.target.closest('#stage5') || e.target.closest('#stage6')) return;
 
   const x = e.clientX, y = e.clientY;
   noteClicks++;
@@ -866,6 +922,10 @@ function switchStage(fromId, toId) {
   const to = document.getElementById(toId);
   if (from) { from.style.pointerEvents = 'none'; from.classList.add('hidden'); }
   if (to) { to.classList.remove('hidden'); to.style.pointerEvents = ''; }
+  // Stage 3 进入时启动闪回动画
+  if (toId === 'stage3') { initFlash(); }
+  // Stage 6 进入时启动终场爱心雨
+  if (toId === 'stage6') { startHeavyHeartRain(); }
 }
 
 // ==================== Stage 1: 你喜欢我吗 ====================
@@ -875,14 +935,10 @@ let loveBtnScale = 1;
 function handleLoveYes() {
   const cx = window.innerWidth / 2;
   const cy = window.innerHeight / 2;
-  // 飘到右上角空白区
-  const toX = window.innerWidth - 90;
-  const toY = 80;
   spawnAnimParticles(cx, cy, 'rgba(255,64,129,1)', 80);
-  startHeartAnim(cx, cy, toX, toY);
+  startHeartAnim(cx, cy);
   startHeartRain();
-  // 等 grow + pulse + drift 全部完成再切换（~3.5秒）
-  setTimeout(() => switchStage('stage1', 'stage2'), 3600);
+  setTimeout(() => switchStage('stage1', 'stage2'), 2000);
 }
 
 function handleLoveNo() {
@@ -1038,7 +1094,95 @@ function submitSort() {
   const ranked = sortOrder.map((p, i) => `${i + 1}. ${p}`).join('\n');
   sendMail('小柯的行程排序', ranked);
   showToast('已发送排序结果！✨');
-  setTimeout(() => switchStage('stage3', 'stage4'), 1000);
+  setTimeout(() => switchStage('stage4', 'stage5'), 1000);
+}
+
+// ==================== Stage 3: 闪回动画 ====================
+let flashIdx = 0;
+const flashTotal = 6;
+let flashTimer = null;
+
+function initFlash() {
+  flashIdx = 0;
+  updateFlashCards();
+  updateFlashDots();
+  flashTimer = setInterval(nextFlash, 2500);
+}
+
+function nextFlash() {
+  const cards = document.querySelectorAll('.flash-card');
+  if (flashIdx < cards.length - 1) {
+    cards[flashIdx].classList.remove('active');
+    cards[flashIdx].classList.add('exit');
+    flashIdx++;
+    cards[flashIdx].classList.remove('exit');
+    cards[flashIdx].classList.add('active');
+    updateFlashDots();
+  } else {
+    clearInterval(flashTimer);
+    // 最后一页停留 1 秒后自动跳过
+    setTimeout(() => skipFlash(), 1000);
+  }
+}
+
+function updateFlashCards() {
+  const cards = document.querySelectorAll('.flash-card');
+  cards.forEach((c, i) => { c.classList.remove('active', 'exit'); });
+  cards[0].classList.add('active');
+}
+
+function updateFlashDots() {
+  const dotsContainer = document.getElementById('flashDots');
+  dotsContainer.innerHTML = '';
+  for (let i = 0; i < flashTotal; i++) {
+    const dot = document.createElement('span');
+    dot.className = 'flash-dot' + (i === flashIdx ? ' current' : '');
+    dotsContainer.appendChild(dot);
+  }
+}
+
+function skipFlash() {
+  clearInterval(flashTimer);
+  switchStage('stage3', 'stage4');
+}
+
+// ==================== Stage 5: 留言 ====================
+function submitMessage() {
+  const name = document.getElementById('senderName').value.trim();
+  const msg = document.getElementById('finalMessage').value.trim();
+  if (!name) { showToast('请先写下你的名字哦～'); return; }
+  if (!msg) { showToast('请写下想说的话再发送哦～'); return; }
+  const content = `来自：${name}\n\n想说的话：\n${msg}`;
+  sendMail(`${name} 想对你说的话`, content);
+  showToast('已收到你的心里话～💕');
+  // 启动超级爱心雨
+  startHeavyHeartRain();
+  setTimeout(() => switchStage('stage5', 'stage6'), 1200);
+}
+
+// ==================== 终场超强爱心雨 ====================
+function startHeavyHeartRain() {
+  // 先停掉普通爱心雨
+  if (rainInterval) { clearInterval(rainInterval); rainInterval = null; }
+  // 疯狂爱心雨
+  const heavyInterval = setInterval(() => {
+    for (let i = 0; i < 4; i++) {
+      const drop = document.createElement('div');
+      drop.className = 'heart-drop';
+      drop.textContent = ['💕', '💗', '💖', '💝', '💘', '✨', '🌸', '🩷', '💞', '💓', '💌', '❤️'][Math.floor(Math.random() * 12)];
+      drop.style.cssText = `
+        left: ${Math.random() * 100}%;
+        top: -40px;
+        --fall-dur: ${2 + Math.random() * 5}s;
+        --fall-delay: ${Math.random() * 0.5}s;
+        --size: ${22 + Math.random() * 40}px;
+      `;
+      heartRain.appendChild(drop);
+      setTimeout(() => drop.remove(), 8000);
+    }
+  }, 150);
+  // 30 秒后恢复正常速度
+  setTimeout(() => { clearInterval(heavyInterval); startHeartRain(); }, 30000);
 }
 
 // ==================== 邮件发送 ====================
