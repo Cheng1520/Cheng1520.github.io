@@ -45,6 +45,7 @@
     margin-bottom: 30px;
     text-shadow: 0 0 30px rgba(255,150,200,0.6);
     line-height: 1.6;
+    pointer-events: none;
   }
 
   /* === 按钮 === */
@@ -744,22 +745,35 @@ document.getElementById('stage0').addEventListener('click', (e) => {
   // 15 下后过渡
   if (noteClicks >= MAX_NOTE_CLICKS) {
     stage0Active = false;
-    document.getElementById('stage0Title').style.transition = 'opacity 0.8s';
-    document.getElementById('stage0Title').style.opacity = '0';
-    document.getElementById('stage0Hint').style.transition = 'opacity 0.5s';
-    document.getElementById('stage0Hint').style.opacity = '0';
-    document.getElementById('progressBarWrap').style.transition = 'opacity 0.5s';
-    document.getElementById('progressBarWrap').style.opacity = '0';
-    document.getElementById('clickCounter').style.transition = 'opacity 0.5s';
-    document.getElementById('clickCounter').style.opacity = '0';
+
+    function fadeAndHide(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.style.transition = 'opacity 0.5s';
+      el.style.opacity = '0';
+      el.style.pointerEvents = 'none';
+    }
+    fadeAndHide('stage0Title');
+    fadeAndHide('stage0Hint');
+    fadeAndHide('progressBarWrap');
+    fadeAndHide('clickCounter');
 
     // 清除所有纸条
+    setTimeout(() => { notesLayer.innerHTML = ''; }, 1500);
+
+    // 直接把 stage0 整个隐藏，然后显示 stage1
+    document.getElementById('stage0').style.transition = 'opacity 0.6s';
+    document.getElementById('stage0').style.opacity = '0';
+    document.getElementById('stage0').style.pointerEvents = 'none';
+
     setTimeout(() => {
-      notesLayer.innerHTML = '';
-    }, 1500);
+      document.getElementById('stage0').classList.add('hidden');
+      document.getElementById('stage0').style.opacity = '';
+      document.getElementById('stage0').style.pointerEvents = '';
+      document.getElementById('stage1').classList.remove('hidden');
+    }, 600);
 
     showToast('要问你问题啦～ 💕');
-    setTimeout(() => switchStage('stage0', 'stage1'), 1500);
   }
 });
 
@@ -786,9 +800,8 @@ function showToast(msg) {
 function switchStage(fromId, toId) {
   const from = document.getElementById(fromId);
   const to = document.getElementById(toId);
-  from.classList.add('hidden');
-  to.classList.remove('hidden');
-  to.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (from) { from.style.pointerEvents = 'none'; from.classList.add('hidden'); }
+  if (to) { to.classList.remove('hidden'); to.style.pointerEvents = ''; }
 }
 
 // ==================== Stage 1: 你喜欢我吗 ====================
